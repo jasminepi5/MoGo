@@ -176,7 +176,7 @@ fun RegisterScreen(
                     viewModel.resetState()
                 },
                 modifier = Modifier.weight(1f),
-                placeholder = { Text("9 digits") }
+                placeholder = { Text("Mobile number") }
             )
         }
 

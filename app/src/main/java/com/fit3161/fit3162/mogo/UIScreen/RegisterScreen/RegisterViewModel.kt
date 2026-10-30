@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.fit3161.fit3162.mogo.utils.PhoneNumbers
 
 data class RegisterUI(
     val email: String = "",
@@ -126,20 +127,21 @@ class RegisterViewModel(private val repo: AuthRepository) : ViewModel() {
                 _state.value = AuthState.Error("Please select a country code")
             countryOptions.none {it.code == data.countryCode} ->
                 _state.value = AuthState.Error("Invalid country code")
-            data.phoneNumber.length != 9 ->
-                _state.value = AuthState.Error("Phone number must be 9 digits (e.g. 0xxxxxxxx")
+            PhoneNumbers.toE164(data.countryCode, data.phoneNumber) == null ->
+                _state.value = AuthState.Error("Please enter a valid phone number for the selected country.")
             !isGenderValid(data.gender) ->
                 _state.value = AuthState.Error("Please enter a valid gender, do not leave it blank.")
 
             else -> viewModelScope.launch {
                 _state.value = AuthState.Loading
 
-                val fullPhone = "${data.countryCode} ${data.phoneNumber}"
+                // Already validated above; stored in E.164 format, e.g. "+61412345678"
+                val fullPhone = PhoneNumbers.toE164(data.countryCode, data.phoneNumber) ?: return@launch
                 repo.register(
                     data.email.trim(),
                     data.password,
                     data.name,
-                    fullPhone,   // <- must be the string
+                    fullPhone,
                     data.gender
                 ).onSuccess { _state.value = AuthState.AwaitingEmailConfirmation }
                     .onFailure { _state.value = AuthState.Error(it.message ?: "Registration failed.") }
@@ -186,7 +188,8 @@ class RegisterViewModel(private val repo: AuthRepository) : ViewModel() {
     }
 
     fun onPhoneChange(value: String) {
-        if (value.all { it.isDigit() } && value.length <= 9) {
+        // E.164 numbers have at most 15 digits; the country code is chosen separately
+        if (value.all { it.isDigit() } && value.length <= 15) {
             _form.value = _form.value.copy(phoneNumber = value)
         }
     }
