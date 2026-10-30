@@ -52,14 +52,10 @@ class AuthRepository(private val supabase: SupabaseClient) {
         }
     }
 
-    fun getSupabaseClient(): SupabaseClient = supabase
-
     /**
-     * Returns boolean if user is currently logged in or not.
-     *
-     *
+     * Returns true if a user is currently logged in.
      */
-    fun isUserLogedIn(): Boolean {
+    fun isUserLoggedIn(): Boolean {
         return supabase.auth.currentUserOrNull() != null
     }
 
