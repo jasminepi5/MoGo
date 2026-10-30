@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.RegisterScreen
 
 import androidx.compose.animation.AnimatedVisibility
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -121,8 +123,8 @@ fun RegisterScreen(
                 viewModel.onEmailChange(it)
                 viewModel.resetState()
             },
-            placeholder = { Text("username@student.monash.edu") },
-            label = { Text("Monash Email Address") },
+            placeholder = { Text(stringResource(R.string.username_student_monash_edu)) },
+            label = { Text(stringResource(R.string.monash_email_address)) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -140,7 +142,7 @@ fun RegisterScreen(
                 viewModel.onNameChange(it)
                 viewModel.resetState()
             },
-            label = { Text("Name") },
+            label = { Text(stringResource(R.string.name)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -176,7 +178,7 @@ fun RegisterScreen(
                     viewModel.resetState()
                 },
                 modifier = Modifier.weight(1f),
-                placeholder = { Text("Mobile number") }
+                placeholder = { Text(stringResource(R.string.mobile_number_2)) }
             )
         }
 
@@ -188,7 +190,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
-                placeholder = { Text("Search country") },
+                placeholder = { Text(stringResource(R.string.search_country)) },
                 modifier = Modifier.padding(8.dp)
             )
 
@@ -213,7 +215,7 @@ fun RegisterScreen(
                 value = if (showOtherInput && otherInput.isNotBlank())
                     "Other: $otherInput" else form.gender,
                 onValueChange = {},
-                label = { Text("Gender") },
+                label = { Text(stringResource(R.string.gender)) },
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
                     IconButton(onClick = { genderExpanded = true }) {
@@ -258,7 +260,7 @@ fun RegisterScreen(
                         viewModel.onGenderChange("Other: $it")
                         viewModel.resetState()
                     },
-                    label = { Text("Please specify") },
+                    label = { Text(stringResource(R.string.please_specify)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -273,7 +275,7 @@ fun RegisterScreen(
                 viewModel.onPasswordChange(it)
                 viewModel.resetState()
             },
-            label = { Text("Password") },
+            label = { Text(stringResource(R.string.password)) },
             visualTransformation = if (passwordVisible)
                 VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
@@ -302,7 +304,7 @@ fun RegisterScreen(
                 viewModel.onConfirmPasswordChange(it)
                 viewModel.resetState()
             },
-            label = { Text("Confirm Password") },
+            label = { Text(stringResource(R.string.confirm_password)) },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
@@ -360,14 +362,14 @@ fun RegisterScreen(
                     strokeWidth = 2.dp
                 )
             } else {
-                Text("Register")
+                Text(stringResource(R.string.register))
             }
         }
 
         Spacer(modifier = Modifier.height(20.dp))
 
         TextButton(onClick = onNavigateToLogin) {
-            Text("Already have an account? Sign in")
+            Text(stringResource(R.string.already_have_an_account_sign_in))
         }
 
         /**
@@ -376,10 +378,9 @@ fun RegisterScreen(
         if (state is AuthState.AwaitingEmailConfirmation) {
             AlertDialog(
                 onDismissRequest = {}, // Disable outside click dismiss
-                title = { Text("Registration Successful!") },
+                title = { Text(stringResource(R.string.registration_successful)) },
                 text = {
-                    Text(
-                        "Check your Monash email and click the verification link. Then return to sign in."
+                    Text(stringResource(R.string.check_your_monash_email_and_click_the_ve)
                     )
                 },
                 confirmButton = {
@@ -393,7 +394,7 @@ fun RegisterScreen(
                             containerColor = Color(0xFFCEA2FD)
                         )
                     ) {
-                        Text("Continue")
+                        Text(stringResource(R.string.continue_label))
                     }
                 }
             )

@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.Settings
 
 import android.net.Uri
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -162,7 +164,7 @@ fun SettingsScreenUI(
             ) {
                 Icon(Icons.Filled.Person, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Add Safety Contact from Phone")
+                Text(stringResource(R.string.add_safety_contact_from_phone))
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -195,7 +197,7 @@ fun SettingsScreenUI(
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCEA2FD)),
                 shape = RoundedCornerShape(15.dp)
             ) {
-                Text("Save Changes", fontSize = 18.sp)
+                Text(stringResource(R.string.save_changes), fontSize = 18.sp)
             }
         }
     }

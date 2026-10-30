@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.BookingPreview
 
 import androidx.compose.foundation.layout.Arrangement
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -150,8 +152,7 @@ fun BookingPreviewScreen(viewModel: BookingPreviewViewModel) {
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                "Distance",
+                            Text(stringResource(R.string.distance),
                                 style = MaterialTheme.typography.labelSmall
                             )
                             Text(
@@ -160,8 +161,7 @@ fun BookingPreviewScreen(viewModel: BookingPreviewViewModel) {
                             )
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                "Duration",
+                            Text(stringResource(R.string.duration),
                                 style = MaterialTheme.typography.labelSmall
                             )
                             Text(

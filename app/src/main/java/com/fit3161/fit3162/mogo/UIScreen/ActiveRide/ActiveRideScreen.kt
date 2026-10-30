@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.ActiveRide
 
 import com.fit3161.fit3162.mogo.data.model.RideStatus
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -107,7 +109,7 @@ fun ActiveRideScreen(
         AlertDialog(
             onDismissRequest = { showSosDialog = false },
             title = {
-                Text("Send SOS Alert?", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.send_sos_alert), fontWeight = FontWeight.Bold)
             },
             text = {
                 Text(
@@ -132,12 +134,12 @@ fun ActiveRideScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                 ) {
-                    Text("Send SOS", color = Color.White)
+                    Text(stringResource(R.string.send_sos), color = Color.White)
                 }
             },
             dismissButton = {
                 OutlinedButton(onClick = { showSosDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -147,10 +149,10 @@ fun ActiveRideScreen(
     if (state.rideEnded) {
         AlertDialog(
             onDismissRequest = { onBack() },
-            title = { Text("Ride Completed") },
-            text = { Text("The ride has ended. We hope you had a safe trip!") },
+            title = { Text(stringResource(R.string.ride_completed)) },
+            text = { Text(stringResource(R.string.the_ride_has_ended_we_hope_you_had_a_saf)) },
             confirmButton = {
-                Button(onClick = { onBack() }) { Text("Done") }
+                Button(onClick = { onBack() }) { Text(stringResource(R.string.done)) }
             }
         )
     }
@@ -300,8 +302,7 @@ fun ActiveRideScreen(
                             tint = Color.Gray
                         )
                         Spacer(Modifier.height(8.dp))
-                        Text(
-                            "No active rides currently",
+                        Text(stringResource(R.string.no_active_rides_currently),
                             style = MaterialTheme.typography.titleSmall,
                             color = Color.Gray
                         )
@@ -328,8 +329,7 @@ fun ActiveRideScreen(
                                             strokeWidth = 2.dp
                                         )
                                         Spacer(Modifier.width(6.dp))
-                                        Text(
-                                            "Loading...",
+                                        Text(stringResource(R.string.loading),
                                             style = MaterialTheme.typography.titleSmall
                                         )
                                     }
@@ -354,8 +354,7 @@ fun ActiveRideScreen(
                                             tint = Color(0xFFFF9800)
                                         )
                                         Spacer(Modifier.width(6.dp))
-                                        Text(
-                                            "Waiting for driver location...",
+                                        Text(stringResource(R.string.waiting_for_driver_location),
                                             style = MaterialTheme.typography.titleSmall
                                         )
                                     }
@@ -378,7 +377,7 @@ fun ActiveRideScreen(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
-                        TextButton(onClick = onBack) { Text("Back") }
+                        TextButton(onClick = onBack) { Text(stringResource(R.string.back)) }
                     }
                 }
             }
@@ -405,8 +404,7 @@ fun ActiveRideScreen(
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                "Distance",
+                            Text(stringResource(R.string.distance),
                                 style = MaterialTheme.typography.labelSmall
                             )
                             Text(
@@ -415,8 +413,7 @@ fun ActiveRideScreen(
                             )
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                "Duration",
+                            Text(stringResource(R.string.duration),
                                 style = MaterialTheme.typography.labelSmall
                             )
                             Text(
@@ -478,7 +475,7 @@ fun ActiveRideScreen(
                             tint = Color.Black
                         )
                         Spacer(Modifier.width(6.dp))
-                        Text("Share Trip", fontSize = 16.sp, color = Color.Black)
+                        Text(stringResource(R.string.share_trip), fontSize = 16.sp, color = Color.Black)
                     }
 
                     Spacer(Modifier.height(8.dp))
@@ -500,8 +497,7 @@ fun ActiveRideScreen(
                             tint = Color.White
                         )
                         Spacer(Modifier.width(6.dp))
-                        Text(
-                            "SOS - I Feel Unsafe",
+                        Text(stringResource(R.string.sos_i_feel_unsafe),
                             fontSize = 16.sp,
                             color = Color.White
                         )
@@ -510,8 +506,7 @@ fun ActiveRideScreen(
                     // Warning if no emergency contacts are configured
                     if (state.emergencyContacts.isEmpty()) {
                         Spacer(Modifier.height(4.dp))
-                        Text(
-                            "No safety contacts set up. Add them in Settings.",
+                        Text(stringResource(R.string.no_safety_contacts_set_up_add_them_in_se),
                             fontSize = 12.sp,
                             color = Color.Gray
                         )

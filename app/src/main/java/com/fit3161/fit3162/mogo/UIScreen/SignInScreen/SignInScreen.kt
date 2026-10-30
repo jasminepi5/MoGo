@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.SignInScreen
 
 import androidx.compose.animation.AnimatedVisibility
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -116,12 +118,12 @@ fun SignInScreen(
         OutlinedTextField(
             value = userEmail,
             onValueChange = { userEmail = it; viewModel.resetState() },
-            label = { Text("Monash Email Address") },
+            label = { Text(stringResource(R.string.monash_email_address)) },
             isError = userEmail.isNotEmpty() && !isValid,
-            placeholder = { Text("username@student.monash.edu") },
+            placeholder = { Text(stringResource(R.string.username_student_monash_edu)) },
             supportingText = {
                 if (userEmail.isNotEmpty() && !isValid) {
-                    Text("Please enter your Monash email (e.g. [user]@[student/staff].monash.edu)")
+                    Text(stringResource(R.string.please_enter_your_monash_email_e_g_user))
                 }
             },
             keyboardOptions = KeyboardOptions(
@@ -136,7 +138,7 @@ fun SignInScreen(
         OutlinedTextField(
             value = userPassword,
             onValueChange = { userPassword = it; viewModel.resetState()  },
-            label = { Text("Password") },
+            label = { Text(stringResource(R.string.password)) },
             visualTransformation = if (passwordVisible)
                 VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
@@ -158,7 +160,7 @@ fun SignInScreen(
         )
 
         TextButton(onClick = onNavigateToRegister) {
-            Text("Forgot Password? Re-register with the same email!")
+            Text(stringResource(R.string.forgot_password_re_register_with_the_sam))
         }
 
         AnimatedVisibility(visible = state is AuthState.Error) {
@@ -204,13 +206,13 @@ fun SignInScreen(
                     strokeWidth = 2.dp
                 )
             } else {
-                Text("Sign In")
+                Text(stringResource(R.string.sign_in))
             }
         }
         Spacer(modifier=Modifier.height(20.dp))
 
         TextButton(onClick = onNavigateToRegister) {
-            Text("Don't have an account? Register")
+            Text(stringResource(R.string.don_t_have_an_account_register))
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.HomeDashboard
 
 import com.fit3161.fit3162.mogo.data.model.BookingStatus
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -253,7 +255,7 @@ fun HomeScreenUI(
                                 contentScale = ContentScale.Crop
                             )
                         } else {
-                            Text("P", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                            Text(stringResource(R.string.p), fontSize = 20.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -284,8 +286,7 @@ fun HomeScreenUI(
                         .clickable { if (isDriver) onRoleToggle("rider") },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        "Rider",
+                    Text(stringResource(R.string.rider),
                         fontWeight = if (!isDriver) FontWeight.Bold else FontWeight.Normal,
                         fontSize = 14.sp,
                         color = if (!isDriver) Color.White else Color.Gray
@@ -300,8 +301,7 @@ fun HomeScreenUI(
                         .clickable { if (!isDriver) onRoleToggle("driver") },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        "Driver",
+                    Text(stringResource(R.string.driver),
                         fontWeight = if (isDriver) FontWeight.Bold else FontWeight.Normal,
                         fontSize = 14.sp,
                         color = if (isDriver) Color.White else Color.Gray
@@ -485,8 +485,7 @@ fun HomeScreenUI(
 
                         // "Tap to track" hint when ride is in progress
                         if (ongoing.isInProgress) {
-                            Text(
-                                "Tap to view live tracking",
+                            Text(stringResource(R.string.tap_to_view_live_tracking),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color(0xFF2196F3),
@@ -512,8 +511,8 @@ fun HomeScreenUI(
                             tint = Color(0xFFCEA2FD)
                         )
                         Spacer(Modifier.height(8.dp))
-                        Text("No rides scheduled", fontSize = 14.sp, color = Color.Gray)
-                        Text("Tap 'Book Future Ride' to get started", fontSize = 12.sp, color = Color.Gray)
+                        Text(stringResource(R.string.no_rides_scheduled), fontSize = 14.sp, color = Color.Gray)
+                        Text(stringResource(R.string.tap_book_future_ride_to_get_started), fontSize = 12.sp, color = Color.Gray)
                     }
                 }
             }
@@ -521,7 +520,7 @@ fun HomeScreenUI(
             Spacer(modifier = Modifier.height(30.dp))
 
             // History section
-            Text("History", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.history), fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
             Spacer(modifier = Modifier.height(8.dp))
             if (isDriver) {
                 Box(
@@ -532,13 +531,13 @@ fun HomeScreenUI(
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Driver History", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
+                        Text(stringResource(R.string.driver_history), fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
                         Spacer(modifier = Modifier.height(8.dp))
                         if (uiState.driverHistory.isNotEmpty()) {
                             Text("${uiState.driverHistory.size}", fontWeight = FontWeight.Bold, fontSize = 40.sp, color = Color(0xFF4A2B7A))
-                            Text("completed drives", fontSize = 11.sp, color = Color.Gray)
+                            Text(stringResource(R.string.completed_drives), fontSize = 11.sp, color = Color.Gray)
                         } else {
-                            Text("No past drives", fontSize = 12.sp, color = Color.Gray)
+                            Text(stringResource(R.string.no_past_drives), fontSize = 12.sp, color = Color.Gray)
                         }
                     }
                 }
@@ -551,13 +550,13 @@ fun HomeScreenUI(
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Rider History", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
+                        Text(stringResource(R.string.rider_history), fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
                         Spacer(modifier = Modifier.height(8.dp))
                         if (uiState.riderHistory.isNotEmpty()) {
                             Text("${uiState.riderHistory.size}", fontWeight = FontWeight.Bold, fontSize = 40.sp, color = Color(0xFF4A2B7A))
-                            Text("completed rides", fontSize = 11.sp, color = Color.Gray)
+                            Text(stringResource(R.string.completed_rides), fontSize = 11.sp, color = Color.Gray)
                         } else {
-                            Text("No past rides", fontSize = 12.sp, color = Color.Gray)
+                            Text(stringResource(R.string.no_past_rides), fontSize = 12.sp, color = Color.Gray)
                         }
                     }
                 }
@@ -566,7 +565,7 @@ fun HomeScreenUI(
             Spacer(modifier = Modifier.height(24.dp))
 
             // Bookings section
-            Text("Bookings", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.bookings), fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -582,10 +581,10 @@ fun HomeScreenUI(
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Rider Bookings", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
+                        Text(stringResource(R.string.rider_bookings), fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
                         Spacer(modifier = Modifier.height(8.dp))
                         Text("${confirmedBookings.size}", fontWeight = FontWeight.Bold, fontSize = 40.sp, color = Color(0xFF4A2B7A))
-                        Text("booked", fontSize = 11.sp, color = Color.Gray)
+                        Text(stringResource(R.string.booked_2), fontSize = 11.sp, color = Color.Gray)
                     }
                 }
                 Box(
@@ -597,10 +596,10 @@ fun HomeScreenUI(
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Driver Bookings", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
+                        Text(stringResource(R.string.driver_bookings), fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Gray)
                         Spacer(modifier = Modifier.height(8.dp))
                         Text("${uiState.driverRides.size}", fontWeight = FontWeight.Bold, fontSize = 40.sp, color = Color(0xFF4A2B7A))
-                        Text("offered", fontSize = 11.sp, color = Color.Gray)
+                        Text(stringResource(R.string.offered), fontSize = 11.sp, color = Color.Gray)
                     }
                 }
             }
@@ -608,7 +607,7 @@ fun HomeScreenUI(
             Spacer(modifier = Modifier.height(30.dp))
 
             // Carbon Metrics
-            Text("Carbon Metrics", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.carbon_metrics), fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -620,7 +619,7 @@ fun HomeScreenUI(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("%.2f".format(uiState.totalCarbonSaved), fontWeight = FontWeight.Bold, fontSize = 28.sp, color = Color(0xFF4CAF50))
-                        Text("kg CO₂ saved", fontSize = 11.sp, color = Color.Gray)
+                        Text(stringResource(R.string.kg_co_saved), fontSize = 11.sp, color = Color.Gray)
                     }
                 }
                 Box(
@@ -629,7 +628,7 @@ fun HomeScreenUI(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("%.1f".format(uiState.treesEquivalent), fontWeight = FontWeight.Bold, fontSize = 28.sp, color = Color(0xFF4CAF50))
-                        Text("trees equivalent", fontSize = 11.sp, color = Color.Gray)
+                        Text(stringResource(R.string.trees_equivalent), fontSize = 11.sp, color = Color.Gray)
                     }
                 }
                 Box(
@@ -638,7 +637,7 @@ fun HomeScreenUI(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("%.0f".format(uiState.totalDistanceShared), fontWeight = FontWeight.Bold, fontSize = 28.sp, color = Color(0xFF4CAF50))
-                        Text("km shared", fontSize = 11.sp, color = Color.Gray)
+                        Text(stringResource(R.string.km_shared), fontSize = 11.sp, color = Color.Gray)
                     }
                 }
             }
@@ -651,9 +650,9 @@ fun HomeScreenUI(
     if (showNotificationDialog) {
         AlertDialog(
             onDismissRequest = { showNotificationDialog = false },
-            title = { Text("Notifications") },
-            text = { Text("No notifications at this time.") },
-            confirmButton = { TextButton(onClick = { showNotificationDialog = false }) { Text("OK") } }
+            title = { Text(stringResource(R.string.notifications)) },
+            text = { Text(stringResource(R.string.no_notifications_at_this_time)) },
+            confirmButton = { TextButton(onClick = { showNotificationDialog = false }) { Text(stringResource(R.string.ok)) } }
         )
     }
 }

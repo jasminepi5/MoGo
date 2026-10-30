@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.FutureRideScreen
 
 import androidx.compose.foundation.background
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -64,7 +66,7 @@ fun PickupDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Confirm Booking", fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.confirm_booking), fontWeight = FontWeight.Bold)
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -82,8 +84,7 @@ fun PickupDialog(
 
                 HorizontalDivider()
 
-                Text(
-                    "Where should the driver pick you up?",
+                Text(stringResource(R.string.where_should_the_driver_pick_you_up),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -125,12 +126,12 @@ fun PickupDialog(
                     containerColor = Color(0xFFB57BFF)
                 )
             ) {
-                Text("Confirm Booking", color = Color.White)
+                Text(stringResource(R.string.confirm_booking), color = Color.White)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         }
     )
@@ -206,11 +207,11 @@ fun FutureRideScreenUI(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Button(onClick = { showDatePicker = true }) {
-                Text("Select Date")
+                Text(stringResource(R.string.select_date))
             }
             if (state.selectedDate.isNotEmpty()) {
                 OutlinedButton(onClick = { viewModel.onDateCleared() }) {
-                    Text("Clear")
+                    Text(stringResource(R.string.clear))
                 }
             }
         }
@@ -226,11 +227,11 @@ fun FutureRideScreenUI(
                         datePickerState.selectedDateMillis?.let { millis ->
                             viewModel.onDateSelected(convertMillisToDate(millis))
                         }
-                    }) { Text("Confirm") }
+                    }) { Text(stringResource(R.string.confirm)) }
                 },
                 dismissButton = {
                     TextButton(onClick = { showDatePicker = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.cancel))
                     }
                 }
             ) {
@@ -286,8 +287,8 @@ fun FutureRideScreenUI(
         if (state.showBookSuccess) {
             AlertDialog(
                 onDismissRequest = { viewModel.dismissBookSuccess() },
-                title = { Text("Booked!", fontWeight = FontWeight.Bold) },
-                text = { Text("Your ride has been booked successfully.") },
+                title = { Text(stringResource(R.string.booked), fontWeight = FontWeight.Bold) },
+                text = { Text(stringResource(R.string.your_ride_has_been_booked_successfully)) },
                 confirmButton = {
                     Button(
                         onClick = { viewModel.dismissBookSuccess() },
@@ -295,7 +296,7 @@ fun FutureRideScreenUI(
                             containerColor = Color(0xFFB57BFF)
                         )
                     ) {
-                        Text("OK", color = Color.White)
+                        Text(stringResource(R.string.ok), color = Color.White)
                     }
                 }
             )
@@ -427,18 +428,18 @@ fun FutureRideCard(
                         onClick = onUnhide,
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB57BFF)),
                         shape = RoundedCornerShape(12.dp)
-                    ) { Text("Restore") }
+                    ) { Text(stringResource(R.string.restore)) }
                 } else {
                     Button(
                         onClick = onHide,
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEAD7FF)),
                         shape = RoundedCornerShape(12.dp)
-                    ) { Text("Not Interested") }
+                    ) { Text(stringResource(R.string.not_interested)) }
                     Button(
                         onClick = onBook,
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB57BFF)),
                         shape = RoundedCornerShape(12.dp)
-                    ) { Text("Book") }
+                    ) { Text(stringResource(R.string.book)) }
                 }
             }
         }

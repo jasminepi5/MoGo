@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.MyRides
 
 import com.fit3161.fit3162.mogo.data.model.RideStatus
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -53,7 +55,7 @@ fun MyRidesScreen(
     if (state.showCancelSuccess) {
         AlertDialog(
             onDismissRequest = { viewModel.dismissCancelSuccess() },
-            title = { Text("Ride Cancelled", fontWeight = FontWeight.Bold) },
+            title = { Text(stringResource(R.string.ride_cancelled), fontWeight = FontWeight.Bold) },
             text = {
                 Text(
                     "Your ride has been cancelled successfully. " +
@@ -65,7 +67,7 @@ fun MyRidesScreen(
                     onClick = { viewModel.dismissCancelSuccess() },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB57BFF))
                 ) {
-                    Text("OK", color = Color.White)
+                    Text(stringResource(R.string.ok), color = Color.White)
                 }
             }
         )
@@ -108,7 +110,7 @@ fun MyRidesScreen(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                Text("No booked rides")
+                Text(stringResource(R.string.no_booked_rides))
             }
         } else {
             LazyColumn(modifier = Modifier.weight(1f)) {
@@ -176,7 +178,7 @@ fun MyRidesScreen(
             shape = RoundedCornerShape(15.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCEA2FD))
         ) {
-            Text("Upload Future Ride", fontSize = 18.sp)
+            Text(stringResource(R.string.upload_future_ride), fontSize = 18.sp)
         }
         Spacer(modifier = Modifier.height(10.dp))
     }
@@ -204,15 +206,14 @@ fun MyRideCard(
 
         AlertDialog(
             onDismissRequest = { showCancelDialog = false },
-            title = { Text("Cancel Ride", fontWeight = FontWeight.Bold) },
+            title = { Text(stringResource(R.string.cancel_ride), fontWeight = FontWeight.Bold) },
             text = {
                 Column {
-                    Text(
-                        "Are you sure? This will cancel all rider bookings too.",
+                    Text(stringResource(R.string.are_you_sure_this_will_cancel_all_rider),
                         fontSize = 14.sp
                     )
                     Spacer(Modifier.height(12.dp))
-                    Text("Reason for cancellation:", fontSize = 13.sp, color = Color.Gray)
+                    Text(stringResource(R.string.reason_for_cancellation), fontSize = 13.sp, color = Color.Gray)
                     Spacer(Modifier.height(4.dp))
 
                     ExposedDropdownMenuBox(
@@ -252,11 +253,11 @@ fun MyRideCard(
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                     enabled = selectedReason.isNotEmpty()
                 ) {
-                    Text("Confirm Cancellation", color = Color.White)
+                    Text(stringResource(R.string.confirm_cancellation), color = Color.White)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showCancelDialog = false }) { Text("Go Back") }
+                TextButton(onClick = { showCancelDialog = false }) { Text(stringResource(R.string.go_back)) }
             }
         )
     }
@@ -265,7 +266,7 @@ fun MyRideCard(
     if (showStartDialog) {
         AlertDialog(
             onDismissRequest = { showStartDialog = false },
-            title = { Text("Start Ride") },
+            title = { Text(stringResource(R.string.start_ride)) },
             text = {
                 Text(
                     "This will mark the ride as in progress and " +
@@ -277,11 +278,11 @@ fun MyRideCard(
                     onClick = { showStartDialog = false; onStartRide() },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
                 ) {
-                    Text("Start Ride", color = Color.White)
+                    Text(stringResource(R.string.start_ride), color = Color.White)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showStartDialog = false }) { Text("Not Yet") }
+                TextButton(onClick = { showStartDialog = false }) { Text(stringResource(R.string.not_yet)) }
             }
         )
     }
@@ -290,7 +291,7 @@ fun MyRideCard(
     if (showEndDialog) {
         AlertDialog(
             onDismissRequest = { showEndDialog = false },
-            title = { Text("End Ride") },
+            title = { Text(stringResource(R.string.end_ride)) },
             text = {
                 Text(
                     "This will mark the ride as completed " +
@@ -302,11 +303,11 @@ fun MyRideCard(
                     onClick = { showEndDialog = false; onEndRide() },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4A2C8A))
                 ) {
-                    Text("End Ride", color = Color.White)
+                    Text(stringResource(R.string.end_ride), color = Color.White)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showEndDialog = false }) { Text("Keep Going") }
+                TextButton(onClick = { showEndDialog = false }) { Text(stringResource(R.string.keep_going)) }
             }
         )
     }
@@ -427,7 +428,7 @@ fun MyRideCard(
                         }
                     }
                 } else if (ride.rideStatus == RideStatus.SCHEDULED || ride.rideStatus == RideStatus.IN_PROGRESS) {
-                    Text("No riders booked yet", fontSize = 13.sp, color = Color.Gray)
+                    Text(stringResource(R.string.no_riders_booked_yet), fontSize = 13.sp, color = Color.Gray)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -444,7 +445,7 @@ fun MyRideCard(
                                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFCDD2)),
                                 shape = RoundedCornerShape(12.dp)
                             ) {
-                                Text("Cancel", color = Color.Red)
+                                Text(stringResource(R.string.cancel), color = Color.Red)
                             }
                             Button(
                                 onClick = { showStartDialog = true },
@@ -453,7 +454,7 @@ fun MyRideCard(
                             ) {
                                 Icon(Icons.Filled.PlayArrow, null, Modifier.size(16.dp), tint = Color.White)
                                 Spacer(Modifier.width(4.dp))
-                                Text("Start Ride", color = Color.White)
+                                Text(stringResource(R.string.start_ride), color = Color.White)
                             }
                         }
                     }
@@ -470,7 +471,7 @@ fun MyRideCard(
                             ) {
                                 Icon(Icons.Filled.Map, null, Modifier.size(16.dp), tint = Color.White)
                                 Spacer(Modifier.width(4.dp))
-                                Text("View Map", color = Color.White)
+                                Text(stringResource(R.string.view_map), color = Color.White)
                             }
                             Button(
                                 onClick = { showEndDialog = true },
@@ -480,7 +481,7 @@ fun MyRideCard(
                             ) {
                                 Icon(Icons.Filled.Stop, null, Modifier.size(16.dp), tint = Color.White)
                                 Spacer(Modifier.width(4.dp))
-                                Text("End Ride", color = Color.White)
+                                Text(stringResource(R.string.end_ride), color = Color.White)
                             }
                         }
                     }

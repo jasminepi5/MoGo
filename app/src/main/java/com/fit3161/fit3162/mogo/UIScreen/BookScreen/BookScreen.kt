@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.BookScreen
 
 import android.util.Log
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -105,13 +107,13 @@ fun BookScreenUI(
     if (state.showCancelSuccess) {
         AlertDialog(
             onDismissRequest = { viewModel.dismissCancelSuccess() },
-            title = { Text("Booking Cancelled", fontWeight = FontWeight.Bold) },
-            text = { Text("Your booking has been cancelled successfully.") },
+            title = { Text(stringResource(R.string.booking_cancelled), fontWeight = FontWeight.Bold) },
+            text = { Text(stringResource(R.string.your_booking_has_been_cancelled_successf)) },
             confirmButton = {
                 Button(
                     onClick = { viewModel.dismissCancelSuccess() },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB57BFF))
-                ) { Text("OK", color = Color.White) }
+                ) { Text(stringResource(R.string.ok), color = Color.White) }
             }
         )
     }
@@ -188,18 +190,18 @@ fun BookScreenUI(
                 }
             }
         } else {
-            Text("No upcoming rides", fontSize = 26.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4A2C8A))
+            Text(stringResource(R.string.no_upcoming_rides), fontSize = 26.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4A2C8A))
             Spacer(modifier = Modifier.height(8.dp))
             Box(
                 Modifier.fillMaxWidth().height(80.dp).background(Color(0xFFF3E8FF), RoundedCornerShape(20.dp)),
                 contentAlignment = Alignment.Center
-            ) { Text("No rides scheduled", fontSize = 14.sp, color = Color.Gray) }
+            ) { Text(stringResource(R.string.no_rides_scheduled), fontSize = 14.sp, color = Color.Gray) }
         }
 
         Spacer(modifier = Modifier.height(30.dp))
 
         // Booked rides list
-        Text("Booked Rides", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+        Text(stringResource(R.string.booked_rides), fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
 
         if (state.isLoading) CircularProgressIndicator()
         state.error?.let { Text("Error: $it", color = Color.Red) }
@@ -210,7 +212,7 @@ fun BookScreenUI(
         Spacer(modifier = Modifier.height(12.dp))
 
         if (!state.isLoading && state.bookings.isEmpty() && state.error == null) {
-            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { Text("No booked rides") }
+            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { Text(stringResource(R.string.no_booked_rides)) }
         } else {
             LazyColumn(modifier = Modifier.weight(1f)) {
                 items(state.bookings.size) { idx ->
@@ -233,7 +235,7 @@ fun BookScreenUI(
             modifier = Modifier.fillMaxWidth().height(55.dp),
             shape = RoundedCornerShape(15.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCEA2FD))
-        ) { Text("Book Future Ride", fontSize = 18.sp) }
+        ) { Text(stringResource(R.string.book_future_ride), fontSize = 18.sp) }
 
         Spacer(modifier = Modifier.height(15.dp))
     }
@@ -260,12 +262,12 @@ fun BookedCard(
 
         AlertDialog(
             onDismissRequest = { showCancelDialog = false },
-            title = { Text("Cancel Booking", fontWeight = FontWeight.Bold) },
+            title = { Text(stringResource(R.string.cancel_booking), fontWeight = FontWeight.Bold) },
             text = {
                 Column {
-                    Text("Are you sure you want to cancel this booking?", fontSize = 14.sp)
+                    Text(stringResource(R.string.are_you_sure_you_want_to_cancel_this_boo), fontSize = 14.sp)
                     Spacer(Modifier.height(12.dp))
-                    Text("Reason for cancellation:", fontSize = 13.sp, color = Color.Gray)
+                    Text(stringResource(R.string.reason_for_cancellation), fontSize = 13.sp, color = Color.Gray)
                     Spacer(Modifier.height(4.dp))
                     ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = !expanded }) {
                         OutlinedTextField(
@@ -294,9 +296,9 @@ fun BookedCard(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                     enabled = selectedReason.isNotEmpty()
-                ) { Text("Confirm Cancellation", color = Color.White) }
+                ) { Text(stringResource(R.string.confirm_cancellation), color = Color.White) }
             },
-            dismissButton = { TextButton(onClick = { showCancelDialog = false }) { Text("Go Back") } }
+            dismissButton = { TextButton(onClick = { showCancelDialog = false }) { Text(stringResource(R.string.go_back)) } }
         )
     }
 
@@ -366,13 +368,13 @@ fun BookedCard(
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.weight(1f)
-                    ) { Text("Cancel") }
+                    ) { Text(stringResource(R.string.cancel)) }
                     Button(
                         onClick = onDetailsClick,
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB57BFF)),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.weight(1f)
-                    ) { Text("Details") }
+                    ) { Text(stringResource(R.string.details)) }
                 }
 
                 if (ride?.isRecurring == true && ride.recurringGroupId != null) {
@@ -382,7 +384,7 @@ fun BookedCard(
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB57BFF)),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.fillMaxWidth()
-                    ) { Text("Rebook Next Week") }
+                    ) { Text(stringResource(R.string.rebook_next_week)) }
                 }
             }
         }

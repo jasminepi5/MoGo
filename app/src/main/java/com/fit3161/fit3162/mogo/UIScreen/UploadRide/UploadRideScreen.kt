@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.UploadRide
 
 import androidx.compose.foundation.layout.Arrangement
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -141,8 +143,8 @@ fun UploadRideScreen(
                 value = form.destination?.name ?: "",
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Destination") },
-                placeholder = { Text("Select a campus") },
+                label = { Text(stringResource(R.string.destination)) },
+                placeholder = { Text(stringResource(R.string.select_a_campus)) },
                 leadingIcon = { Icon(Icons.Default.Flag, null) },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(
@@ -188,7 +190,7 @@ fun UploadRideScreen(
                 onValueChange = {},
                 readOnly = true,
                 modifier = Modifier.weight(1f),
-                label = { Text("Date") },
+                label = { Text(stringResource(R.string.date)) },
                 leadingIcon = { Icon(Icons.Default.CalendarToday, null) },
                 trailingIcon = {
                     IconButton(onClick = { showDatePicker = true }) {
@@ -205,7 +207,7 @@ fun UploadRideScreen(
                 onValueChange = {},
                 readOnly = true,
                 modifier = Modifier.weight(1f),
-                label = { Text("Time") },
+                label = { Text(stringResource(R.string.time)) },
                 leadingIcon = { Icon(Icons.Default.Schedule, null) },
                 trailingIcon = {
                     IconButton(onClick = { showTimePicker = true }) {
@@ -228,11 +230,11 @@ fun UploadRideScreen(
                             viewModel.onDateChange(convertMillisToDate(millis))
                         }
                         showDatePicker = false
-                    }) { Text("Confirm") }
+                    }) { Text(stringResource(R.string.confirm)) }
                 },
                 dismissButton = {
                     TextButton(onClick = { showDatePicker = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.cancel))
                     }
                 }
             ) {
@@ -253,11 +255,11 @@ fun UploadRideScreen(
                         )
                         viewModel.onTimeChange(formattedTime)
                         showTimePicker = false
-                    }) { Text("Confirm") }
+                    }) { Text(stringResource(R.string.confirm)) }
                 },
                 dismissButton = {
                     TextButton(onClick = { showTimePicker = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.cancel))
                     }
                 }
             ) {
@@ -270,7 +272,7 @@ fun UploadRideScreen(
         OutlinedTextField(
             value = form.availableSeats,
             onValueChange = { viewModel.onSeatsChange(it) },
-            label = { Text("Seats Available") },
+            label = { Text(stringResource(R.string.seats_available)) },
             modifier = Modifier.fillMaxWidth(),
             leadingIcon = { Icon(Icons.Default.Groups, null) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -284,7 +286,7 @@ fun UploadRideScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.AddCircleOutline, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
-                Text("Recurring Ride?")
+                Text(stringResource(R.string.recurring_ride))
             }
             Switch(
                 checked = form.isRecurring,
@@ -305,8 +307,8 @@ fun UploadRideScreen(
                 value = form.vehicleType,
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Vehicle Type") },
-                placeholder = { Text("Select type") },
+                label = { Text(stringResource(R.string.vehicle_type)) },
+                placeholder = { Text(stringResource(R.string.select_type)) },
                 leadingIcon = { Icon(Icons.Default.DirectionsCar, null) },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(
@@ -336,7 +338,7 @@ fun UploadRideScreen(
         OutlinedTextField(
             value = form.plateNumber,
             onValueChange = { viewModel.onPlateNumberChange(it) },
-            label = { Text("Plate Number") },
+            label = { Text(stringResource(R.string.plate_number)) },
             modifier = Modifier.fillMaxWidth(),
             leadingIcon = { Icon(Icons.Default.DirectionsCar, null) }
         )
@@ -348,7 +350,7 @@ fun UploadRideScreen(
         if (status is UploadStatus.Success) {
             AlertDialog(
                 onDismissRequest = {},
-                title = { Text("Ride Uploaded Successfully!") },
+                title = { Text(stringResource(R.string.ride_uploaded_successfully)) },
                 confirmButton = {
                     Button(
                         onClick = {
@@ -359,7 +361,7 @@ fun UploadRideScreen(
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFFCEA2FD)
                         )
-                    ) { Text("Continue") }
+                    ) { Text(stringResource(R.string.continue_label)) }
                 }
             )
         }
@@ -382,8 +384,8 @@ fun UploadRideScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("1 week", fontSize = 12.sp, color = Color.Gray)
-                    Text("12 weeks", fontSize = 12.sp, color = Color.Gray)
+                    Text(stringResource(R.string.s_1_week), fontSize = 12.sp, color = Color.Gray)
+                    Text(stringResource(R.string.s_12_weeks), fontSize = 12.sp, color = Color.Gray)
                 }
             }
         }
@@ -396,7 +398,7 @@ fun UploadRideScreen(
             enabled = status !is UploadStatus.Loading
         ) {
             if (status is UploadStatus.Loading) CircularProgressIndicator(color = Color.White)
-            else Text("Post Ride Offer")
+            else Text(stringResource(R.string.post_ride_offer))
         }
     }
 }

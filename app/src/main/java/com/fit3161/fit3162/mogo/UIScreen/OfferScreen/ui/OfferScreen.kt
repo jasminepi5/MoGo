@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.OfferScreen.ui
 
 import androidx.compose.foundation.background
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -65,7 +67,7 @@ fun OfferScreenUI(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                Text("No offers available")
+                Text(stringResource(R.string.no_offers_available))
             }
         } else {
             LazyColumn(
@@ -134,7 +136,7 @@ fun OfferCardSkeleton(offer: Offer) {
                         ),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Text("Claim")
+                        Text(stringResource(R.string.claim))
                     }
 
                     // T&C button – shows terms dialog
@@ -145,7 +147,7 @@ fun OfferCardSkeleton(offer: Offer) {
                         ),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Text("T&C")
+                        Text(stringResource(R.string.t_c))
                     }
                 }
 
@@ -153,11 +155,11 @@ fun OfferCardSkeleton(offer: Offer) {
                 if (showTermsDialog) {
                     AlertDialog(
                         onDismissRequest = { showTermsDialog = false },
-                        title = { Text("Terms & Conditions") },
-                        text = { Text("Please refer to MoGo's terms and conditions.") },
+                        title = { Text(stringResource(R.string.terms_conditions)) },
+                        text = { Text(stringResource(R.string.please_refer_to_mogo_s_terms_and_conditi)) },
                         confirmButton = {
                             TextButton(onClick = { showTermsDialog = false }) {
-                                Text("Ok")
+                                Text(stringResource(R.string.ok_2))
                             }
                         }
                     )
@@ -167,10 +169,10 @@ fun OfferCardSkeleton(offer: Offer) {
                 if (showCodeDialog) {
                     AlertDialog(
                         onDismissRequest = { showCodeDialog = false },
-                        title = { Text("Your Offer Code") },
+                        title = { Text(stringResource(R.string.your_offer_code)) },
                         text = {
                             Column {
-                                Text("Use this code when paying:")
+                                Text(stringResource(R.string.use_this_code_when_paying))
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
                                     text = offer.offerCode ?: "No code available",
@@ -183,7 +185,7 @@ fun OfferCardSkeleton(offer: Offer) {
                         },
                         confirmButton = {
                             TextButton(onClick = { showCodeDialog = false }) {
-                                Text("Close")
+                                Text(stringResource(R.string.close))
                             }
                         }
                     )

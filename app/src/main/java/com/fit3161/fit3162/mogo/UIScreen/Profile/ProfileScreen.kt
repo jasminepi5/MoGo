@@ -1,6 +1,8 @@
 package com.fit3161.fit3162.mogo.UIScreen.Profile
 
 import android.net.Uri
+import com.fit3161.fit3162.mogo.R
+import androidx.compose.ui.res.stringResource
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -215,7 +217,7 @@ fun ProfileScreenUI(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("P", fontSize = 40.sp, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.p), fontSize = 40.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -241,7 +243,7 @@ fun ProfileScreenUI(
             value = name,
             onValueChange = {},
             textStyle = TextStyle(color = Color.Black),
-            label = { Text("Full Name") },
+            label = { Text(stringResource(R.string.full_name)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = false,
             trailingIcon = {
@@ -260,7 +262,7 @@ fun ProfileScreenUI(
             value = email,
             textStyle = TextStyle(color = Color.Black),
             onValueChange = {},
-            label = { Text("Email") },
+            label = { Text(stringResource(R.string.email)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = false
         )
@@ -271,7 +273,7 @@ fun ProfileScreenUI(
             value = mobile,
             textStyle = TextStyle(color = Color.Black),
             onValueChange = {},
-            label = { Text("Mobile Number") },
+            label = { Text(stringResource(R.string.mobile_number)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = false,
             trailingIcon = {
@@ -290,7 +292,7 @@ fun ProfileScreenUI(
             value = gender,
             onValueChange = {},
             textStyle = TextStyle(color = Color.Black),
-            label = { Text("Gender") },
+            label = { Text(stringResource(R.string.gender)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = false,
             trailingIcon = {
@@ -309,7 +311,7 @@ fun ProfileScreenUI(
             value = userRole,
             onValueChange = {},
             textStyle = TextStyle(color = Color.Black),
-            label = { Text("Role (Rider/Driver)") },
+            label = { Text(stringResource(R.string.role_rider_driver)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = false,
             trailingIcon = {
@@ -328,7 +330,7 @@ fun ProfileScreenUI(
             value = homeCampus?.name ?: "",
             onValueChange = {},
             textStyle = TextStyle(color = Color.Black),
-            label = { Text("Home Campus") },
+            label = { Text(stringResource(R.string.home_campus)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = false,
             trailingIcon = {
@@ -350,7 +352,7 @@ fun ProfileScreenUI(
             colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
             shape = RoundedCornerShape(12.dp)
         ) {
-            Text("Change Password", color = Color.White)
+            Text(stringResource(R.string.change_password), color = Color.White)
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -363,7 +365,7 @@ fun ProfileScreenUI(
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCA3433)),
             shape = RoundedCornerShape(12.dp)
         ) {
-            Text("Log Out")
+            Text(stringResource(R.string.log_out))
         }
     }
 
@@ -371,12 +373,12 @@ fun ProfileScreenUI(
     if (showNameDialog) {
         AlertDialog(
             onDismissRequest = { showNameDialog = false },
-            title = { Text("Edit Full Name") },
+            title = { Text(stringResource(R.string.edit_full_name)) },
             text = {
                 OutlinedTextField(
                     value = tempName,
                     onValueChange = { tempName = it },
-                    label = { Text("Full Name") },
+                    label = { Text(stringResource(R.string.full_name)) },
                     singleLine = true
                 )
             },
@@ -388,10 +390,10 @@ fun ProfileScreenUI(
                         }
                         showNameDialog = false
                     }
-                ) { Text("Save") }
+                ) { Text(stringResource(R.string.save)) }
             },
             dismissButton = {
-                TextButton(onClick = { showNameDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showNameDialog = false }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
@@ -400,12 +402,12 @@ fun ProfileScreenUI(
     if (showMobileDialog) {
         AlertDialog(
             onDismissRequest = { showMobileDialog = false },
-            title = { Text("Edit Mobile Number") },
+            title = { Text(stringResource(R.string.edit_mobile_number)) },
             text = {
                 OutlinedTextField(
                     value = tempMobile,
                     onValueChange = { tempMobile = it },
-                    label = { Text("Mobile Number") },
+                    label = { Text(stringResource(R.string.mobile_number)) },
                     singleLine = true
                 )
             },
@@ -417,10 +419,10 @@ fun ProfileScreenUI(
                         }
                         showMobileDialog = false
                     }
-                ) { Text("Save") }
+                ) { Text(stringResource(R.string.save)) }
             },
             dismissButton = {
-                TextButton(onClick = { showMobileDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showMobileDialog = false }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
@@ -431,7 +433,7 @@ fun ProfileScreenUI(
         var expanded by remember { mutableStateOf(false) }
         AlertDialog(
             onDismissRequest = { showGenderDialog = false },
-            title = { Text("Edit Gender") },
+            title = { Text(stringResource(R.string.edit_gender)) },
             text = {
                 ExposedDropdownMenuBox(
                     expanded = expanded,
@@ -441,7 +443,7 @@ fun ProfileScreenUI(
                         value = tempGender,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Gender") },
+                        label = { Text(stringResource(R.string.gender)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                         modifier = Modifier.menuAnchor()
                     )
@@ -469,10 +471,10 @@ fun ProfileScreenUI(
                         }
                         showGenderDialog = false
                     }
-                ) { Text("Save") }
+                ) { Text(stringResource(R.string.save)) }
             },
             dismissButton = {
-                TextButton(onClick = { showGenderDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showGenderDialog = false }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
@@ -482,7 +484,7 @@ fun ProfileScreenUI(
         val roleOptions = listOf("rider", "driver")
         AlertDialog(
             onDismissRequest = { showRoleDialog = false },
-            title = { Text("Edit Role") },
+            title = { Text(stringResource(R.string.edit_role)) },
             text = {
                 Column {
                     roleOptions.forEach { option ->
@@ -511,10 +513,10 @@ fun ProfileScreenUI(
                         }
                         showRoleDialog = false
                     }
-                ) { Text("Save") }
+                ) { Text(stringResource(R.string.save)) }
             },
             dismissButton = {
-                TextButton(onClick = { showRoleDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showRoleDialog = false }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
@@ -524,7 +526,7 @@ fun ProfileScreenUI(
         var expanded by remember { mutableStateOf(false) }
         AlertDialog(
             onDismissRequest = { showCampusDialog = false },
-            title = { Text("Select Home Campus") },
+            title = { Text(stringResource(R.string.select_home_campus)) },
             text = {
                 ExposedDropdownMenuBox(
                     expanded = expanded,
@@ -534,7 +536,7 @@ fun ProfileScreenUI(
                         value = tempHomeCampus,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Campus") },
+                        label = { Text(stringResource(R.string.campus)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                         modifier = Modifier.menuAnchor()
                     )
@@ -557,10 +559,10 @@ fun ProfileScreenUI(
                         viewModel.updateField("home_campus", tempHomeCampus)
                     }
                     showCampusDialog = false
-                }) { Text("Save") }
+                }) { Text(stringResource(R.string.save)) }
             },
             dismissButton = {
-                TextButton(onClick = { showCampusDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showCampusDialog = false }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
