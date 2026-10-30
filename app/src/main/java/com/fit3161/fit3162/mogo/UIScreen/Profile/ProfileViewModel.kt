@@ -1,6 +1,5 @@
 package com.fit3161.fit3162.mogo.UIScreen.Profile
 
-import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,17 +46,15 @@ data class ProfileUiState(
  * Fetches and exposes the user's profile, and handles updates to individual
  * profile fields and the profile avatar.
  *
- * @param authRepo Provides the current authenticated user's ID and Supabase client.
+ * @param authRepo Provides the current authenticated user's ID.
  * @param profileRepo Fetches and updates profile data in the remote database.
- * @param context Application context required for image upload operations.
+ * @param imageUploadRepo Uploads the profile picture to storage.
  */
 class ProfileViewModel(
     private val authRepo: AuthRepository,
     private val profileRepo: ProfileRepository,
-    private val context: Context // add outside the constructor, within function
+    private val imageUploadRepo: ImageUploadRepository
 ) : ViewModel() {
-
-    private val imageUploadRepo = ImageUploadRepository(authRepo.getSupabaseClient(), context)   // pass context
 
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()

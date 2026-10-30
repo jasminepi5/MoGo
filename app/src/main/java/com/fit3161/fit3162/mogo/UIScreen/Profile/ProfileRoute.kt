@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.fit3161.fit3162.mogo.MogoApplication
 import com.fit3161.fit3162.mogo.data.repo.AuthRepository
+import com.fit3161.fit3162.mogo.data.repo.ImageUploadRepository
 import com.fit3161.fit3162.mogo.data.repo.ProfileRepository
 
 /**
@@ -30,8 +31,9 @@ fun ProfileRoute(
     // Remembered to avoid recreation
     val authRepo = remember { AuthRepository(supabase) }
     val profileRepo = remember { ProfileRepository(supabase) }
+    val imageUploadRepo = remember { ImageUploadRepository(supabase, application.applicationContext) }
     val viewModel = remember {
-        ProfileViewModel(authRepo, profileRepo, application.applicationContext)
+        ProfileViewModel(authRepo, profileRepo, imageUploadRepo)
     }
     // Display Profile UI Screen with Viewmodel/callbacks.
     ProfileScreenUI(viewModel = viewModel, onLogout = onLogout, onRoleChanged = onRoleChanged, onNavigateToSettings = onNavigateToSettings)
