@@ -26,7 +26,7 @@ android {
 
     defaultConfig {
         applicationId = "com.fit3161.fit3162.mogo"
-        minSdk = 35
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
