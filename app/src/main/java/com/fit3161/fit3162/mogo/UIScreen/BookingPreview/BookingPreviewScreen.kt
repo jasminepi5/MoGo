@@ -1,4 +1,4 @@
-package com.fit3161.fit3162.mogo.UIScreen.BookScreen
+package com.fit3161.fit3162.mogo.UIScreen.BookingPreview
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

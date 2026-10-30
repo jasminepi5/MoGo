@@ -29,9 +29,9 @@ import com.fit3161.fit3162.mogo.UIScreen.ActiveRide.ActiveRideViewModelFactory
 import com.fit3161.fit3162.mogo.UIScreen.BookScreen.BookScreenUI
 import com.fit3161.fit3162.mogo.UIScreen.BookScreen.BookViewModel
 import com.fit3161.fit3162.mogo.UIScreen.BookScreen.BookViewModelFactory
-import com.fit3161.fit3162.mogo.UIScreen.BookScreen.BookingPreviewScreen
-import com.fit3161.fit3162.mogo.UIScreen.BookScreen.BookingPreviewViewModel
-import com.fit3161.fit3162.mogo.UIScreen.BookScreen.BookingPreviewViewModelFactory
+import com.fit3161.fit3162.mogo.UIScreen.BookingPreview.BookingPreviewScreen
+import com.fit3161.fit3162.mogo.UIScreen.BookingPreview.BookingPreviewViewModel
+import com.fit3161.fit3162.mogo.UIScreen.BookingPreview.BookingPreviewViewModelFactory
 import com.fit3161.fit3162.mogo.UIScreen.FutureRideScreen.FutureRideScreenUI
 import com.fit3161.fit3162.mogo.UIScreen.FutureRideScreen.FutureRideViewModel
 import com.fit3161.fit3162.mogo.UIScreen.FutureRideScreen.FutureRideViewModelFactory
@@ -41,7 +41,7 @@ import com.fit3161.fit3162.mogo.UIScreen.HomeDashboard.HomeViewModelFactory
 import com.fit3161.fit3162.mogo.UIScreen.MyRides.MyRidesScreen
 import com.fit3161.fit3162.mogo.UIScreen.MyRides.MyRidesViewModel
 import com.fit3161.fit3162.mogo.UIScreen.MyRides.MyRidesViewModelFactory
-import com.fit3161.fit3162.mogo.UIScreen.OfferScreen.OfferScreenUI
+import com.fit3161.fit3162.mogo.UIScreen.OfferScreen.ui.OfferScreenUI
 import com.fit3161.fit3162.mogo.UIScreen.OfferScreen.ui.OfferViewModel
 import com.fit3161.fit3162.mogo.UIScreen.OfferScreen.ui.OfferViewModelFactory
 import com.fit3161.fit3162.mogo.UIScreen.RegisterScreen.RegisterScreen

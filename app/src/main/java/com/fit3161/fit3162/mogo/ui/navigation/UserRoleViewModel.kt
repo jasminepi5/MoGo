@@ -1,4 +1,4 @@
-package com.fit3161.fit3162.mogo.data.model
+package com.fit3161.fit3162.mogo.ui.navigation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

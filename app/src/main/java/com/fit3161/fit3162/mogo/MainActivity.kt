@@ -19,8 +19,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.fit3161.fit3162.mogo.data.model.UserRoleViewModel
-import com.fit3161.fit3162.mogo.data.model.UserRoleViewModelFactory
+import com.fit3161.fit3162.mogo.ui.navigation.UserRoleViewModel
+import com.fit3161.fit3162.mogo.ui.navigation.UserRoleViewModelFactory
 import com.fit3161.fit3162.mogo.data.repo.ProfileRepository
 import com.fit3161.fit3162.mogo.ui.navigation.AppNavigation
 import com.fit3161.fit3162.mogo.ui.navigation.BottomBar

@@ -1,4 +1,4 @@
-package com.fit3161.fit3162.mogo.UIScreen.ProfileScreen
+package com.fit3161.fit3162.mogo.UIScreen.Profile
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

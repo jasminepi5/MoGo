@@ -1,4 +1,4 @@
-package com.fit3161.fit3162.mogo.UIScreen.OfferScreen
+package com.fit3161.fit3162.mogo.UIScreen.OfferScreen.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

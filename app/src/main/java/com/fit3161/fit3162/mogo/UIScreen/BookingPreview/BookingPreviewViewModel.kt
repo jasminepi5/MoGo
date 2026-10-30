@@ -1,4 +1,4 @@
-package com.fit3161.fit3162.mogo.UIScreen.BookScreen
+package com.fit3161.fit3162.mogo.UIScreen.BookingPreview
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
