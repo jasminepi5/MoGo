@@ -61,31 +61,17 @@ class FutureRideViewModel(
         }
     }
 
-    // Book at explicit pickup. Computes pickup→dest distance for carbon.
-    fun bookRideAt(rideId: String, pickupLat: Double, pickupLng: Double, pickupName: String? = null) {
-        viewModelScope.launch {
-            try {
-                val resolvedName = pickupName ?: mapsRepo.reverseGeocode(LatLng(pickupLat, pickupLng))
-                val ride = _uiState.value.rides.firstOrNull { it.id == rideId }
-                val destLat = ride?.destinationLat; val destLng = ride?.destinationLng
-                var distanceMeters: Int? = null; var durationSeconds: Int? = null
-                if (destLat != null && destLng != null) {
-                    mapsRepo.getRoute(LatLng(pickupLat, pickupLng), LatLng(destLat, destLng)).onSuccess { distanceMeters = it.distanceMeters; durationSeconds = it.durationSeconds }
-                }
-                repo.bookRide(rideId = rideId, riderId = userId, pickupLocation = resolvedName, pickupLat = pickupLat, pickupLng = pickupLng, estimatedDistanceMeters = distanceMeters, estimatedDurationSeconds = durationSeconds)
-                    .onSuccess { _uiState.value = _uiState.value.copy(showBookSuccess = true, rides = _uiState.value.rides.filter { it.id != rideId }) }
-                    .onFailure { _uiState.value = _uiState.value.copy(error = "Booking failed: ${it.message}") }
-            } catch (e: Exception) { _uiState.value = _uiState.value.copy(error = e.message) }
-        }
-    }
-
-    // Book using current location. Reverse geocodes first.
+    // Book using current location. Reverse geocodes first, then books like a named pickup.
     fun bookRideUsingCurrentLocation(rideId: String) {
         viewModelScope.launch {
             try {
+                val ride = _uiState.value.rides.firstOrNull { it.id == rideId } ?: run {
+                    _uiState.value = _uiState.value.copy(error = "This ride is no longer available")
+                    return@launch
+                }
                 val pickup = mapsRepo.getDeviceLocation().getOrElse { _uiState.value = _uiState.value.copy(error = "Couldn't get location: ${it.message}"); return@launch }
                 val pickupName = mapsRepo.reverseGeocode(pickup)
-                bookRideAt(rideId, pickup.latitude, pickup.longitude, pickupName)
+                bookRide(ride, pickupName, pickup.latitude, pickup.longitude)
             } catch (e: Exception) { _uiState.value = _uiState.value.copy(error = e.message) }
         }
     }
