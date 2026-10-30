@@ -115,6 +115,7 @@ data class Booking(
 @Serializable
 data class RideBookingInfo(
         @SerialName("booking_id") val bookingId: String,
+        @SerialName("ride_id") val rideId: String,
         @SerialName("rider_id") val riderId: String,
         @SerialName("pickup_location") val pickupLocation: String,
         @SerialName("seats_booked") val seatsBooked: Int,
@@ -200,27 +201,24 @@ class BookRepository(private val client: SupabaseClient) {
                 }
         }
 
-        // Get all active bookings for a specific ride (for driver's My Rides view).
-        // Joins with users table to get the rider's name and phone.
-        suspend fun getBookingsForRide(rideId: String): List<RideBookingInfo> {
-                return try {
-                        client.from("bookings")
-                                .select(
-                                        Columns.raw(
-                                                "booking_id, rider_id, pickup_location, " +
-                                                        "seats_booked, booking_status, users(*)"
-                                        )
-                                ) {
-                                        filter {
-                                                eq("ride_id", rideId)
-                                                neq("booking_status", BookingStatus.CANCELLED)
-                                        }
+        // Get all active bookings for the given rides in one query (for driver's My Rides view),
+        // grouped by ride ID. Joins with users table to get each rider's name and phone.
+        suspend fun getBookingsForRides(rideIds: List<String>): Map<String, List<RideBookingInfo>> {
+                if (rideIds.isEmpty()) return emptyMap()
+                return client.from("bookings")
+                        .select(
+                                Columns.raw(
+                                        "booking_id, ride_id, rider_id, pickup_location, " +
+                                                "seats_booked, booking_status, users(*)"
+                                )
+                        ) {
+                                filter {
+                                        isIn("ride_id", rideIds)
+                                        neq("booking_status", BookingStatus.CANCELLED)
                                 }
-                                .decodeList<RideBookingInfo>()
-                } catch (e: Exception) {
-                        Log.e("REPO_ERROR", "Get bookings for ride failed", e)
-                        emptyList()
-                }
+                        }
+                        .decodeList<RideBookingInfo>()
+                        .groupBy { it.rideId }
         }
 
         // Get all future rides available for booking.

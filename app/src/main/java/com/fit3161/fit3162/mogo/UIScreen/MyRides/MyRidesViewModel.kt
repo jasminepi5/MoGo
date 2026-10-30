@@ -80,9 +80,10 @@ class MyRidesViewModel(
                     }.thenBy { it.departureTime }
                 )
 
-                // Fetch bookings for each ride so the driver can see who booked
+                // Fetch bookings for all rides in one query so the driver can see who booked
+                val bookingsByRide = repo.getBookingsForRides(sorted.map { it.id })
                 val bookingsMap = sorted.associate { ride ->
-                    ride.id to repo.getBookingsForRide(ride.id)
+                    ride.id to (bookingsByRide[ride.id] ?: emptyList())
                 }
 
                 _uiState.value = _uiState.value.copy(
