@@ -52,6 +52,11 @@ android {
         compose = true
         buildConfig = true
     }
+    lint {
+        // Issues that existed when CI was added; lint fails only on new ones.
+        // Regenerate after fixing old issues: delete the file and run ./gradlew lintDebug twice.
+        baseline = file("lint-baseline.xml")
+    }
 }
 
 // For Secrets Gradle Plugin.

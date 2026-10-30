@@ -1,0 +1,33 @@
+name: Android CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      # No local.properties in CI: the Secrets Gradle Plugin falls back to local.defaults.properties,
+      # so the app builds and tests run without real keys.
+      - name: Lint, unit tests and debug build
+        run: ./gradlew lintDebug testDebugUnitTest assembleDebug
+
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            app/build/reports/
+            app/build/test-results/
