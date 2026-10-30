@@ -87,7 +87,8 @@ class MainActivity : ComponentActivity() {
                             onRoleChanged = {
                                 roleViewModel.fetchRole()
                                 roleTrigger++
-                            }
+                            },
+                            roleTrigger = roleTrigger
                         )
                     }
                 }
