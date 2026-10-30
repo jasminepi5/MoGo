@@ -1,23 +1,13 @@
-import java.util.Properties
-
-// Load local.properties
-val localProperties = Properties().apply {
-    val localPropsFile = rootProject.file("local.properties")
-    if (localPropsFile.exists()) {
-        load(localPropsFile.inputStream())
-    }
-}
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 
     // Supabase uses Kotlin serialization
-    kotlin("plugin.serialization") version "2.2.10"
+    alias(libs.plugins.kotlin.serialization)
 
     // Secrets Gradle Plugin
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    alias(libs.plugins.secrets)
 }
 
 android {
@@ -33,34 +23,14 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Fix: Use localProperties to ensure the manifest gets the key
-        manifestPlaceholders["MAPS_API_KEY"] = localProperties["MAPS_API_KEY"] ?: ""
-
-        // Google Maps KEY
-        buildConfigField(
-            "String",
-            "MAPS_API_KEY",
-            "\"${localProperties["MAPS_API_KEY"] ?: ""}\""
-            )
-
-
-        // Supabase URL Key.
-        buildConfigField(
-            "String",
-            "SUPABASE_URL",
-            "\"${localProperties["SUPABASE_URL"] ?: ""}\""
-        )
-
-        // Supabase ANON Key.
-        buildConfigField(
-            "String",
-            "SUPABASE_ANON_KEY",
-            "\"${localProperties["SUPABASE_ANON_KEY"] ?: ""}\""
-        )
+        // MAPS_API_KEY, SUPABASE_URL, SUPABASE_ANON_KEY and MAPS_SHA1_FINGERPRINT come from
+        // local.properties through the Secrets Gradle Plugin (see `secrets` below).
     }
 
     buildTypes {
         release {
+            // TODO: enable once a release build has been tested on a device with keep rules for
+            // kotlinx.serialization, Supabase, Retrofit and Gson.
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -98,89 +68,60 @@ secrets {
     ignoreList.add("storePassword")
 }
 
-val supabaseVersion = "3.4.1"
-val ktorVersion = "3.4.1"
-
 dependencies {
-    implementation("com.squareup.okhttp3:okhttp:5.3.2")
-    implementation("androidx.compose.material:material")
+    // AndroidX core
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.core:core-splashscreen:1.2.0")
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.datastore.preferences)
+
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.benchmark.traceprocessor.android)
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.compose.ui.graphics)
-//    implementation(libs.androidx.benchmark.traceprocessor.jvm)
+    implementation(libs.androidx.navigation.compose)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Image loading (Coil)
+    implementation(libs.coil.compose)
+
+    // Supabase (database, auth, realtime, storage) and its HTTP engine
+    implementation(platform(libs.supabase.bom))
+    implementation(libs.supabase.postgrest)
+    implementation(libs.supabase.auth)
+    implementation(libs.supabase.realtime)
+    implementation(libs.supabase.storage)
+    implementation(libs.ktor.client.android)
+
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.play.services)
+
+    // Maps, location and Places
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
+    implementation(libs.maps.utils)
+    implementation(libs.maps.compose)
+    implementation(libs.places)
+
+    // Retrofit for the Routes API
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+
+    // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    
-    // Image loading (Coil)
-    implementation("io.coil-kt:coil-compose:2.7.0")
-
-    // Supabase Storage (for uploading images)
-    implementation("io.github.jan-tennert.supabase:storage-kt:${supabaseVersion}")
-
-    // Material Compose
-    implementation("androidx.compose.material:material-icons-extended:1.7.8")
-
-    // Supabase dependencies
-    implementation(platform("io.github.jan-tennert.supabase:bom:${supabaseVersion}"))
-    implementation("io.github.jan-tennert.supabase:postgrest-kt") // PostgresSQL
-    implementation("io.github.jan-tennert.supabase:auth-kt") // Authentication
-    implementation("io.github.jan-tennert.supabase:realtime-kt") // Realtime DB
-
-    // Ktor (for Supabase)
-    implementation("io.ktor:ktor-client-android:${ktorVersion}") // Supabase HTTP Engine
-
-    // ViewModel, LiveData dependencies (MVVM architecture)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.2")
-    implementation("androidx.activity:activity-ktx:1.9.0")
-
-    // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2")
-
-    // App Navigation
-    val navVersion = "2.8.9"
-    implementation("androidx.navigation:navigation-compose:$navVersion")
-    // Nav with Fragments
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.7")
-
-    // Maps
-    implementation("com.google.android.gms:play-services-maps:20.0.0")
-    implementation("com.google.android.gms:play-services-location:21.3.0")
-    implementation("com.google.maps.android:android-maps-utils:3.8.2")
-
-    // Places SDK for Android (New)
-    implementation("com.google.android.libraries.places:places:3.5.0")
-
-    // (Optional) Places KTX for Kotlin extensions
-//    implementation("com.google.maps.android:places-ktx:0.5.2")
-
-    // Retrofit for Directions/Routes API
-    implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.3.2")
-
-    // Maps Compose
-    implementation("com.google.maps.android:maps-compose:8.2.2")
-
-    // Datastore for session persistance
-    implementation("androidx.datastore:datastore-preferences:1.1.1")
 }
