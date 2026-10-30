@@ -98,30 +98,8 @@ class MapsRepository(
      * Returns a route based on the origin and destination of the route.
      * Route origin and destination are set by drivers (rider only adds a pickup point).
      */
-    suspend fun getRoute(origin: LatLng, destination: LatLng): Result<RouteResult> = runCatching {
-        val request = RoutesRequest(
-            origin = Waypoint(WaypointLocation(LatLngLiteral(origin.latitude, origin.longitude))),
-            destination = Waypoint(WaypointLocation(LatLngLiteral(destination.latitude, destination.longitude)))
-        )
-
-        val response = apiService.computeRoutes(apiKey = apiKey, request = request)
-        check(!response.routes.isNullOrEmpty()) { "Routes API returned no routes." }
-
-        val route = response.routes.first()
-        val leg = route.legs.first()
-
-        RouteResult(
-            polylinePoints = route.polyline.encodedPolyline,
-            distanceText = leg.localizedValues.distance.text,
-            durationText = leg.localizedValues.duration.text,
-            distanceMeters = route.distanceMeters,
-            durationSeconds = route.duration.trimEnd('s').toIntOrNull() ?: 0,
-            startLocation = LatLng(leg.startLocation.latLng.latitude, leg.startLocation.latLng.longitude),
-            endLocation = LatLng(leg.endLocation.latLng.latitude, leg.endLocation.latLng.longitude),
-            boundsSouthwest = LatLng(route.viewport.low.latitude, route.viewport.low.longitude),
-            boundsNortheast = LatLng(route.viewport.high.latitude, route.viewport.high.longitude)
-        )
-    }
+    suspend fun getRoute(origin: LatLng, destination: LatLng): Result<RouteResult> =
+        computeRoute(origin, destination, stops = emptyList())
 
     /**
      * Computes detour/route distance and duration after adding Rider pickup location.
@@ -145,11 +123,18 @@ class MapsRepository(
     /**
      * Computes/gets route after adding Rider pickup location.
      */
-    suspend fun getRouteWithStop(origin: LatLng, stop: LatLng, destination: LatLng): Result<RouteResult> = runCatching {
+    suspend fun getRouteWithStop(origin: LatLng, stop: LatLng, destination: LatLng): Result<RouteResult> =
+        computeRoute(origin, destination, stops = listOf(stop))
+
+    /**
+     * Calls the Routes API from [origin] to [destination] through [stops] (in order).
+     * Text, start and end location come from the first leg; distance and duration cover the whole route.
+     */
+    private suspend fun computeRoute(origin: LatLng, destination: LatLng, stops: List<LatLng>): Result<RouteResult> = runCatching {
         val request = RoutesRequest(
-            origin = Waypoint(WaypointLocation(LatLngLiteral(origin.latitude, origin.longitude))),
-            destination = Waypoint(WaypointLocation(LatLngLiteral(destination.latitude, destination.longitude))),
-            intermediates = listOf(Waypoint(WaypointLocation(LatLngLiteral(stop.latitude, stop.longitude))))
+            origin = origin.toWaypoint(),
+            destination = destination.toWaypoint(),
+            intermediates = stops.map { it.toWaypoint() }
         )
 
         val response = apiService.computeRoutes(apiKey = apiKey, request = request)
@@ -170,6 +155,8 @@ class MapsRepository(
             boundsNortheast = LatLng(route.viewport.high.latitude, route.viewport.high.longitude)
         )
     }
+
+    private fun LatLng.toWaypoint() = Waypoint(WaypointLocation(LatLngLiteral(latitude, longitude)))
 
     data class DetourResult(val addedKm: Double, val addedMinutes: Long)
 
