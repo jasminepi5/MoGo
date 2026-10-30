@@ -1,5 +1,6 @@
 package com.fit3161.fit3162.mogo.UIScreen.MyRides
 
+import com.fit3161.fit3162.mogo.data.model.RideStatus
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -316,9 +317,9 @@ fun MyRideCard(
             .fillMaxWidth()
             .background(
                 when (ride.rideStatus) {
-                    "in_progress" -> Color(0xFFE8F5E9)
-                    "completed" -> Color(0xFFEEEEEE)
-                    "cancelled" -> Color(0xFFEEEEEE)
+                    RideStatus.IN_PROGRESS -> Color(0xFFE8F5E9)
+                    RideStatus.COMPLETED -> Color(0xFFEEEEEE)
+                    RideStatus.CANCELLED -> Color(0xFFEEEEEE)
                     else -> Color(0xFFF3E8FF)
                 },
                 RoundedCornerShape(20.dp)
@@ -360,10 +361,10 @@ fun MyRideCard(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = when (ride.rideStatus) {
-                        "scheduled" -> Color(0xFF4CAF50)
-                        "in_progress" -> Color(0xFF2196F3)
-                        "completed" -> Color.Gray
-                        "cancelled" -> Color.Red
+                        RideStatus.SCHEDULED -> Color(0xFF4CAF50)
+                        RideStatus.IN_PROGRESS -> Color(0xFF2196F3)
+                        RideStatus.COMPLETED -> Color.Gray
+                        RideStatus.CANCELLED -> Color.Red
                         else -> Color.Gray
                     }
                 )
@@ -425,7 +426,7 @@ fun MyRideCard(
                             }
                         }
                     }
-                } else if (ride.rideStatus == "scheduled" || ride.rideStatus == "in_progress") {
+                } else if (ride.rideStatus == RideStatus.SCHEDULED || ride.rideStatus == RideStatus.IN_PROGRESS) {
                     Text("No riders booked yet", fontSize = 13.sp, color = Color.Gray)
                 }
 
@@ -433,7 +434,7 @@ fun MyRideCard(
 
                 // Action buttons based on ride status
                 when (ride.rideStatus) {
-                    "scheduled" -> {
+                    RideStatus.SCHEDULED -> {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             modifier = Modifier.fillMaxWidth()
@@ -456,7 +457,7 @@ fun MyRideCard(
                             }
                         }
                     }
-                    "in_progress" -> {
+                    RideStatus.IN_PROGRESS -> {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             modifier = Modifier.fillMaxWidth()

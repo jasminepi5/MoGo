@@ -1,5 +1,6 @@
 package com.fit3161.fit3162.mogo.UIScreen.ActiveRide
 
+import com.fit3161.fit3162.mogo.data.model.RideStatus
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -88,11 +89,11 @@ class ActiveRideViewModel(
 
                 // Check driver first, then rider
                 val driverRides = bookRepo.getMyRides(userId)
-                val activeDriverRide = driverRides.firstOrNull { it.rideStatus == "in_progress" }
+                val activeDriverRide = driverRides.firstOrNull { it.rideStatus == RideStatus.IN_PROGRESS }
 
                 val riderBookings = bookRepo.getOngoingRiderBookings(userId)
                 val activeRiderBooking = riderBookings.firstOrNull {
-                    it.rides?.rideStatus == "in_progress"
+                    it.rides?.rideStatus == RideStatus.IN_PROGRESS
                 } ?: riderBookings.firstOrNull()
 
                 val isDriver = activeDriverRide != null
@@ -108,7 +109,7 @@ class ActiveRideViewModel(
                 )
 
                 if (ride != null) fetchRideRoute(ride)
-                if (ride?.rideStatus == "in_progress") startPolling(ride.id, isDriver)
+                if (ride?.rideStatus == RideStatus.IN_PROGRESS) startPolling(ride.id, isDriver)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load: ${e.message}")
                 _uiState.value = _uiState.value.copy(isLoading = false, error = e.message)
@@ -156,7 +157,7 @@ class ActiveRideViewModel(
                         } else if (!isDriver && liveRide.driverLiveLat != null && liveRide.driverLiveLng != null) {
                             _uiState.value = _uiState.value.copy(driverLocation = LatLng(liveRide.driverLiveLat, liveRide.driverLiveLng))
                         }
-                        if (liveRide.rideStatus == "completed") {
+                        if (liveRide.rideStatus == RideStatus.COMPLETED) {
                             _uiState.value = _uiState.value.copy(rideEnded = true)
                             pollingJob?.cancel()
                         }

@@ -1,5 +1,6 @@
 package com.fit3161.fit3162.mogo.UIScreen.HomeDashboard
 
+import com.fit3161.fit3162.mogo.data.model.RideStatus
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -117,9 +118,9 @@ class HomeViewModel(
 
                 // Driver data
                 val allDriverRides = bookRepo.getMyRides(userId)
-                val upcomingDriverRides = allDriverRides.filter { it.rideStatus == "scheduled" }
-                val inProgressDriverRides = allDriverRides.filter { it.rideStatus == "in_progress" }
-                val driverHistory = allDriverRides.filter { it.rideStatus == "completed" }
+                val upcomingDriverRides = allDriverRides.filter { it.rideStatus == RideStatus.SCHEDULED }
+                val inProgressDriverRides = allDriverRides.filter { it.rideStatus == RideStatus.IN_PROGRESS }
+                val driverHistory = allDriverRides.filter { it.rideStatus == RideStatus.COMPLETED }
 
                 // Calculate carbon
                 val riderCarbon = riderHistory.mapNotNull { it.rides?.carbonEstimate }.sum()
@@ -167,7 +168,7 @@ class HomeViewModel(
                 } else {
                     // Rider: check for in_progress booked ride first, then upcoming
                     ongoingBookings
-                        .firstOrNull { it.rides?.rideStatus == "in_progress" }
+                        .firstOrNull { it.rides?.rideStatus == RideStatus.IN_PROGRESS }
                         ?.let { booking ->
                             val ride = booking.rides
                             OngoingRideDetails(

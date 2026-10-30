@@ -1,5 +1,6 @@
 package com.fit3161.fit3162.mogo.UIScreen.UploadRide
 
+import com.fit3161.fit3162.mogo.data.model.RideStatus
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -185,7 +186,7 @@ class UploadRideViewModel(
             originLng = data.originLng,
             destinationLat = destination.latLng.latitude,
             destinationLng = destination.latLng.longitude,
-            rideStatus = "scheduled",
+            rideStatus = RideStatus.SCHEDULED,
             availableSeats = data.availableSeats.toInt(),
             departureTime = buildDepartureTime(
                 data.departureDate,

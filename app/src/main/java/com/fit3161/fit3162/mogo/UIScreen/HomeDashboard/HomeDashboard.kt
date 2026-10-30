@@ -1,5 +1,6 @@
 package com.fit3161.fit3162.mogo.UIScreen.HomeDashboard
 
+import com.fit3161.fit3162.mogo.data.model.BookingStatus
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -571,7 +572,7 @@ fun HomeScreenUI(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                val confirmedBookings = uiState.bookings.filter { it.bookingStatus == "confirmed" }
+                val confirmedBookings = uiState.bookings.filter { it.bookingStatus == BookingStatus.CONFIRMED }
                 Box(
                     modifier = Modifier
                         .weight(1f)

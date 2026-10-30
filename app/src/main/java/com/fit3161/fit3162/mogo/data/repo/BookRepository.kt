@@ -1,5 +1,7 @@
 package com.fit3161.fit3162.mogo.data.repo
 
+import com.fit3161.fit3162.mogo.data.model.BookingStatus
+import com.fit3161.fit3162.mogo.data.model.RideStatus
 import android.util.Log
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
@@ -163,7 +165,7 @@ class BookRepository(private val client: SupabaseClient) {
                         .select(Columns.raw("ride_id")) {
                                 filter {
                                         eq("rider_id", userId)
-                                        neq("booking_status", "cancelled")
+                                        neq("booking_status", BookingStatus.CANCELLED)
                                 }
                         }
                         .decodeList<BookedRideId>()
@@ -177,7 +179,7 @@ class BookRepository(private val client: SupabaseClient) {
                         .select(Columns.raw("*, rides(*, users(*), vehicles(*))")) {
                                 filter {
                                         eq("rider_id", userId)
-                                        eq("booking_status", "confirmed")
+                                        eq("booking_status", BookingStatus.CONFIRMED)
                                 }
                                 order("time_created", Order.ASCENDING)
                         }
@@ -211,7 +213,7 @@ class BookRepository(private val client: SupabaseClient) {
                                 ) {
                                         filter {
                                                 eq("ride_id", rideId)
-                                                neq("booking_status", "cancelled")
+                                                neq("booking_status", BookingStatus.CANCELLED)
                                         }
                                 }
                                 .decodeList<RideBookingInfo>()
@@ -238,7 +240,7 @@ class BookRepository(private val client: SupabaseClient) {
                 return client.from("rides") // Return the list of rides
                         .select(Columns.raw("*, users!inner(*), vehicles!left(*)")) {
                                 filter {and {gte("departure_time", thirtyMinsFromNow) // Filter with optional date
-                                        eq("ride_status", "scheduled") // Filter upcoming rides only
+                                        eq("ride_status", RideStatus.SCHEDULED) // Filter upcoming rides only
                                         gt("available_seats", 0) // Filter rides with available seats > 0
                                         neq("driver_id", userId) // Filter that its not its own ride
                                         // Apply gender preference filtering
@@ -282,7 +284,7 @@ class BookRepository(private val client: SupabaseClient) {
                                         and {
                                                 gte("departure_time", startUtc.format(formatter))
                                                 lte("departure_time", endUtc.format(formatter))
-                                                eq("ride_status", "scheduled")
+                                                eq("ride_status", RideStatus.SCHEDULED)
                                                 gt("available_seats", 0)
                                                 neq("driver_id", userId)
                                                 if (genderPreference != null) {
@@ -334,7 +336,7 @@ class BookRepository(private val client: SupabaseClient) {
                         // Soft-delete the ride itself
                         client.from("rides").update(
                                 buildJsonObject {
-                                        put("ride_status", "cancelled")
+                                        put("ride_status", RideStatus.CANCELLED)
                                         if (reason.isNotBlank()) {
                                                 put("cancellation_reason", reason)
                                         }
@@ -346,13 +348,13 @@ class BookRepository(private val client: SupabaseClient) {
                         // Cancel all active bookings for this ride
                         client.from("bookings").update(
                                 buildJsonObject {
-                                        put("booking_status", "cancelled")
+                                        put("booking_status", BookingStatus.CANCELLED)
                                         put("cancellation_reason", "Ride cancelled by driver")
                                 }
                         ) {
                                 filter {
                                         eq("ride_id", rideId)
-                                        neq("booking_status", "cancelled")
+                                        neq("booking_status", BookingStatus.CANCELLED)
                                 }
                         }
 
@@ -380,7 +382,7 @@ class BookRepository(private val client: SupabaseClient) {
                         // Cancel the booking with reason
                         client.from("bookings").update(
                                 buildJsonObject {
-                                        put("booking_status", "cancelled")
+                                        put("booking_status", BookingStatus.CANCELLED)
                                         if (reason.isNotBlank()) {
                                                 put("cancellation_reason", reason)
                                         }
@@ -452,7 +454,7 @@ class BookRepository(private val client: SupabaseClient) {
                                         filter {
                                                 and {
                                                         eq("rider_id", userId)
-                                                        eq("booking_status", "completed")
+                                                        eq("booking_status", BookingStatus.COMPLETED)
                                                 }
                                         }
                                         order("time_created", Order.DESCENDING)
@@ -472,7 +474,7 @@ class BookRepository(private val client: SupabaseClient) {
                                         filter {
                                                 and {
                                                         eq("driver_id", userId)
-                                                        eq("ride_status", "completed")
+                                                        eq("ride_status", RideStatus.COMPLETED)
                                                 }
                                         }
                                         order("departure_time", Order.DESCENDING)
@@ -492,7 +494,7 @@ class BookRepository(private val client: SupabaseClient) {
                                         filter {
                                                 and {
                                                         eq("rider_id", userId)
-                                                        eq("booking_status", "confirmed")
+                                                        eq("booking_status", BookingStatus.CONFIRMED)
                                                 }
                                         }
                                         order("time_created", Order.ASCENDING)
@@ -515,7 +517,7 @@ class BookRepository(private val client: SupabaseClient) {
                                         filter {
                                                 and {
                                                         eq("driver_id", userId)
-                                                        eq("ride_status", "scheduled")
+                                                        eq("ride_status", RideStatus.SCHEDULED)
                                                         gte("departure_time", nowUtc)
                                                 }
                                         }
@@ -532,7 +534,7 @@ class BookRepository(private val client: SupabaseClient) {
         suspend fun startRide(rideId: String): Result<Unit> {
                 return try {
                         client.from("rides").update(
-                                buildJsonObject { put("ride_status", "in_progress") }
+                                buildJsonObject { put("ride_status", RideStatus.IN_PROGRESS) }
                         ) {
                                 filter { eq("ride_id", rideId) }
                         }
@@ -550,7 +552,7 @@ class BookRepository(private val client: SupabaseClient) {
                         // Mark ride as completed and clear live locations
                         client.from("rides").update(
                                 buildJsonObject {
-                                        put("ride_status", "completed")
+                                        put("ride_status", RideStatus.COMPLETED)
                                         put("driver_live_lat", null as Double?)
                                         put("driver_live_lng", null as Double?)
                                         put("rider_live_lat", null as Double?)
@@ -562,7 +564,7 @@ class BookRepository(private val client: SupabaseClient) {
 
                         // Mark all confirmed bookings for this ride as completed
                         client.from("bookings").update(
-                                buildJsonObject { put("booking_status", "completed") }
+                                buildJsonObject { put("booking_status", BookingStatus.COMPLETED) }
                         ) {
                                 filter { eq("ride_id", rideId) }
                         }
@@ -638,7 +640,7 @@ class BookRepository(private val client: SupabaseClient) {
                                                 and {
                                                         eq("recurring_group_id", recurringGroupId)
                                                         gt("departure_time", afterDepartureTime)
-                                                        eq("ride_status", "scheduled")
+                                                        eq("ride_status", RideStatus.SCHEDULED)
                                                 }
                                         }
                                         order("departure_time", Order.ASCENDING)
@@ -674,7 +676,7 @@ class BookRepository(private val client: SupabaseClient) {
                                 filter {
                                         eq("rider_id", riderId)
                                         eq("ride_id", rideId)
-                                        eq("booking_status", "cancelled")
+                                        eq("booking_status", BookingStatus.CANCELLED)
                                 }
                         }
 
@@ -690,7 +692,7 @@ class BookRepository(private val client: SupabaseClient) {
                                         put("dropoff_lat", dropoffLat)
                                         put("dropoff_lng", dropoffLng)
                                         put("seats_booked", 1)
-                                        put("booking_status", "confirmed")
+                                        put("booking_status", BookingStatus.CONFIRMED)
                                         if (estimatedDistanceMeters != null) {
                                                 put("estimated_distance_meters", estimatedDistanceMeters)
                                         }

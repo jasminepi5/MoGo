@@ -1,5 +1,6 @@
 package com.fit3161.fit3162.mogo.UIScreen.MyRides
 
+import com.fit3161.fit3162.mogo.data.model.RideStatus
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -31,13 +32,13 @@ data class MyRidesUiState(
     // Active rides: in_progress and scheduled (always visible)
     val activeRides: List<Ride>
         get() = rides.filter {
-            it.rideStatus == "in_progress" || it.rideStatus == "scheduled"
+            it.rideStatus == RideStatus.IN_PROGRESS || it.rideStatus == RideStatus.SCHEDULED
         }
 
     // Completed/cancelled rides (hidden by default, toggled by user)
     val completedRides: List<Ride>
         get() = rides.filter {
-            it.rideStatus == "completed" || it.rideStatus == "cancelled"
+            it.rideStatus == RideStatus.COMPLETED || it.rideStatus == RideStatus.CANCELLED
         }
 }
 
@@ -70,10 +71,10 @@ class MyRidesViewModel(
                 val sorted = rides.sortedWith(
                     compareBy<Ride> { ride ->
                         when (ride.rideStatus) {
-                            "in_progress" -> 0
-                            "scheduled" -> 1
-                            "completed" -> 2
-                            "cancelled" -> 3
+                            RideStatus.IN_PROGRESS -> 0
+                            RideStatus.SCHEDULED -> 1
+                            RideStatus.COMPLETED -> 2
+                            RideStatus.CANCELLED -> 3
                             else -> 4
                         }
                     }.thenBy { it.departureTime }

@@ -1,5 +1,6 @@
 package com.fit3161.fit3162.mogo.UIScreen.ActiveRide
 
+import com.fit3161.fit3162.mogo.data.model.RideStatus
 import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -332,7 +333,7 @@ fun ActiveRideScreen(
                                             style = MaterialTheme.typography.titleSmall
                                         )
                                     }
-                                    ride?.rideStatus == "in_progress" &&
+                                    ride?.rideStatus == RideStatus.IN_PROGRESS &&
                                             state.driverLocation != null -> {
                                         Icon(
                                             Icons.Filled.DirectionsCar, null,
@@ -346,7 +347,7 @@ fun ActiveRideScreen(
                                             style = MaterialTheme.typography.titleSmall
                                         )
                                     }
-                                    ride?.rideStatus == "in_progress" -> {
+                                    ride?.rideStatus == RideStatus.IN_PROGRESS -> {
                                         Icon(
                                             Icons.Filled.HourglassBottom, null,
                                             Modifier.size(18.dp),
