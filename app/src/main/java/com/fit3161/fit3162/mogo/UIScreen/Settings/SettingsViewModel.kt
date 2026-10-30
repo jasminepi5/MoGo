@@ -69,8 +69,15 @@ class SettingsViewModel(
                 _uiState.value = _uiState.value.copy(isLoading = false, error = "Not logged in")
                 return@launch
             }
-            val contacts = contactRepo.getContacts(userId)
-            _uiState.value = _uiState.value.copy(contacts = contacts, isLoading = false)
+            try {
+                val contacts = contactRepo.getContacts(userId)
+                _uiState.value = _uiState.value.copy(contacts = contacts, isLoading = false)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = "Couldn't load your emergency contacts: ${e.message}"
+                )
+            }
         }
     }
 

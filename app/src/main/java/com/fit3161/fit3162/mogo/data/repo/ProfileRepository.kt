@@ -1,5 +1,6 @@
 package com.fit3161.fit3162.mogo.data.repo
 
+import android.util.Log
 import com.fit3161.fit3162.mogo.data.model.Location
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
@@ -59,7 +60,7 @@ class ProfileRepository(private val supabase: SupabaseClient) {
                 }
                 .decodeSingleOrNull<UserProfile>()
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("ProfileRepository", "Couldn't load profile", e)
             null
         }
     }

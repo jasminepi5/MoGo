@@ -19,15 +19,11 @@ data class EmergencyContact(
 
 class EmergencyContactRepository(private val supabase: SupabaseClient) {
 
+    // Throws on failure so the caller can tell "couldn't load" apart from "no contacts".
     suspend fun getContacts(userId: String): List<EmergencyContact> {
-        return try {
-            supabase.from("emergency_contacts")
-                .select { filter { eq("user_id", userId) } }
-                .decodeList<EmergencyContact>()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emptyList()
-        }
+        return supabase.from("emergency_contacts")
+            .select { filter { eq("user_id", userId) } }
+            .decodeList<EmergencyContact>()
     }
 
     suspend fun addContact(contact: EmergencyContact): Result<Unit> {

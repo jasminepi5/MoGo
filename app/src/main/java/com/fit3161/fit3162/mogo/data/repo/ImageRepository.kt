@@ -1,5 +1,6 @@
 package com.fit3161.fit3162.mogo.data.repo
 
+import android.util.Log
 import android.content.Context
 import android.net.Uri
 import io.github.jan.supabase.SupabaseClient
@@ -29,7 +30,7 @@ class ImageUploadRepository(
                     supabase.storage.from("avatars").publicUrl(fileName)
                 } else null
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e("ImageUploadRepository", "Avatar upload failed", e)
                 null
             }
         }
