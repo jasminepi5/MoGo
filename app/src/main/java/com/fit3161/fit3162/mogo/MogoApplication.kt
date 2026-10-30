@@ -49,6 +49,8 @@ class MogoApplication : Application() {
                 HttpLoggingInterceptor.Level.BODY
             else
                 HttpLoggingInterceptor.Level.NONE
+            // Keep the Maps API key out of the debug log
+            redactHeader("X-Goog-Api-Key")
         }
 
         val okHttpClient = OkHttpClient.Builder()
@@ -59,9 +61,11 @@ class MogoApplication : Application() {
                     .addHeader("X-Android-Package", BuildConfig.APPLICATION_ID)
                     .addHeader("X-Android-Cert", BuildConfig.MAPS_SHA1_FINGERPRINT)
                     .build()
-                Log.d("RoutesAPI", "Request URL: ${request.url}")
-                Log.d("RoutesAPI", "X-Android-Package: ${BuildConfig.APPLICATION_ID}")
-                Log.d("RoutesAPI", "X-Android-Cert: ${BuildConfig.MAPS_SHA1_FINGERPRINT}")
+                if (BuildConfig.DEBUG) {
+                    Log.d("RoutesAPI", "Request URL: ${request.url}")
+                    Log.d("RoutesAPI", "X-Android-Package: ${BuildConfig.APPLICATION_ID}")
+                    Log.d("RoutesAPI", "X-Android-Cert: ${BuildConfig.MAPS_SHA1_FINGERPRINT}")
+                }
                 chain.proceed(request)
             }
             .addInterceptor(loggingInterceptor)

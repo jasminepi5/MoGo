@@ -48,7 +48,6 @@ class MapsRepository(
             CancellationTokenSource().token
         ).await()
         if (location != null) {
-            Log.d(TAG, "Device location: ${location.latitude}, ${location.longitude}")
             LatLng(location.latitude, location.longitude)
         } else {
             throw Exception("Unable to get device location. Ensure location services are enabled.")

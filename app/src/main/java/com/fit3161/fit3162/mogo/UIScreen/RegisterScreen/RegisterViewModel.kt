@@ -1,6 +1,5 @@
 package com.fit3161.fit3162.mogo.UIScreen.RegisterScreen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -136,7 +135,6 @@ class RegisterViewModel(private val repo: AuthRepository) : ViewModel() {
                 _state.value = AuthState.Loading
 
                 val fullPhone = "${data.countryCode} ${data.phoneNumber}"
-                Log.d("RegisterDebug", "Full phone to send: '$fullPhone'")
                 repo.register(
                     data.email.trim(),
                     data.password,
