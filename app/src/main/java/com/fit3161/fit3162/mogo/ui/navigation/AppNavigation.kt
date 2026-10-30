@@ -59,9 +59,6 @@ import com.fit3161.fit3162.mogo.UIScreen.UploadRide.UploadRideViewModelFactory
 import com.fit3161.fit3162.mogo.UIScreen.WelcomeScreen.WelcomeScreen
 import com.fit3161.fit3162.mogo.data.SessionManager
 import com.fit3161.fit3162.mogo.data.repo.AuthRepository
-import com.fit3161.fit3162.mogo.ui.maps.MapScreenUI
-import com.fit3161.fit3162.mogo.ui.maps.MapsViewModel
-import com.fit3161.fit3162.mogo.ui.maps.MapsViewModelFactory
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -82,7 +79,6 @@ sealed class Screen(val route: String) {
     object MyRides : Screen("myRides")
     object Profile : Screen("profile")
     object Offer : Screen("offer")
-    object Map : Screen("map")
     object ActiveRide : Screen("activeRide")
     object Settings : Screen("settings")
     object BookingPreview : Screen("bookingPreview/{bookingId}") {
@@ -298,13 +294,6 @@ fun AppNavigation(
                 viewModel = viewModel,
                 onBack = { navController.popBackStack() }
             )
-        }
-
-        // Map View Screen (accessible via code, not in bottom bar)
-        composable(Screen.Map.route) {
-            val factory = MapsViewModelFactory(application.mapsRepository)
-            val viewModel: MapsViewModel = viewModel(factory = factory)
-            MapScreenUI(viewModel = viewModel)
         }
 
         // Booking Preview Screen
