@@ -128,6 +128,12 @@ data class HiddenRide(
         @SerialName("ride_id") val rideId: String
 )
 
+/**
+ * User columns joined onto rides and bookings. Only what the screens show (plus the gender
+ * fields used for matching), so other riders' and drivers' email and date of birth aren't fetched.
+ */
+private const val RIDE_USER_COLUMNS =
+        "user_id, user_name, user_phone, user_gender, driver_rating, avatar_url, gender_preference"
 
 class BookRepository(private val client: SupabaseClient) {
 
@@ -177,7 +183,7 @@ class BookRepository(private val client: SupabaseClient) {
         // Get all confirmed bookings for a rider, joined with ride + driver + vehicle.
         suspend fun getBookedRides(userId: String): List<Booking> {
                 return client.from("bookings")
-                        .select(Columns.raw("*, rides(*, users(*), vehicles(*))")) {
+                        .select(Columns.raw("*, rides(*, users($RIDE_USER_COLUMNS), vehicles(*))")) {
                                 filter {
                                         eq("rider_id", userId)
                                         eq("booking_status", BookingStatus.CONFIRMED)
@@ -191,7 +197,7 @@ class BookRepository(private val client: SupabaseClient) {
         suspend fun getBookingById(bookingId: String): Booking? {
                 return try {
                         client.from("bookings")
-                                .select(Columns.raw("*, rides(*, users(*), vehicles(*))")) {
+                                .select(Columns.raw("*, rides(*, users($RIDE_USER_COLUMNS), vehicles(*))")) {
                                         filter { eq("booking_id", bookingId) }
                                 }
                                 .decodeSingleOrNull<Booking>()
@@ -209,7 +215,7 @@ class BookRepository(private val client: SupabaseClient) {
                         .select(
                                 Columns.raw(
                                         "booking_id, ride_id, rider_id, pickup_location, " +
-                                                "seats_booked, booking_status, users(*)"
+                                                "seats_booked, booking_status, users($RIDE_USER_COLUMNS)"
                                 )
                         ) {
                                 filter {
@@ -236,7 +242,7 @@ class BookRepository(private val client: SupabaseClient) {
                         .map { it.rideId }
                         .toSet()
                 return client.from("rides") // Return the list of rides
-                        .select(Columns.raw("*, users!inner(*), vehicles!left(*)")) {
+                        .select(Columns.raw("*, users!inner($RIDE_USER_COLUMNS), vehicles!left(*)")) {
                                 filter {and {gte("departure_time", thirtyMinsFromNow) // Filter with optional date
                                         eq("ride_status", RideStatus.SCHEDULED) // Filter upcoming rides only
                                         gt("available_seats", 0) // Filter rides with available seats > 0
@@ -277,7 +283,7 @@ class BookRepository(private val client: SupabaseClient) {
                 val formatter = java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME
 
                 val allRides = client.from("rides")
-                        .select(Columns.raw("*, users!inner(*), vehicles!left(*)")) {
+                        .select(Columns.raw("*, users!inner($RIDE_USER_COLUMNS), vehicles!left(*)")) {
                                 filter {
                                         and {
                                                 gte("departure_time", startUtc.format(formatter))
@@ -314,10 +320,10 @@ class BookRepository(private val client: SupabaseClient) {
         }
 
         // Get all rides posted by a driver (any status).
-        // Joins users(*) so ride.users.userName is populated.
+        // Joins users($RIDE_USER_COLUMNS) so ride.users.userName is populated.
         suspend fun getMyRides(userId: String): List<Ride> {
                 return client.from("rides")
-                        .select(Columns.raw("*, users(*), vehicles(*)")) {
+                        .select(Columns.raw("*, users($RIDE_USER_COLUMNS), vehicles(*)")) {
                                 filter { eq("driver_id", userId) }
                                 order("departure_time", Order.ASCENDING)
                         }
@@ -448,7 +454,7 @@ class BookRepository(private val client: SupabaseClient) {
         suspend fun getRiderHistory(userId: String): List<Booking> {
                 return try {
                         client.from("bookings")
-                                .select(Columns.raw("*, rides(*, users(*), vehicles(*))")) {
+                                .select(Columns.raw("*, rides(*, users($RIDE_USER_COLUMNS), vehicles(*))")) {
                                         filter {
                                                 and {
                                                         eq("rider_id", userId)
@@ -468,7 +474,7 @@ class BookRepository(private val client: SupabaseClient) {
         suspend fun getDriverHistory(userId: String): List<Ride> {
                 return try {
                         client.from("rides")
-                                .select(Columns.raw("*, users(*), vehicles(*)")) {
+                                .select(Columns.raw("*, users($RIDE_USER_COLUMNS), vehicles(*)")) {
                                         filter {
                                                 and {
                                                         eq("driver_id", userId)
@@ -488,7 +494,7 @@ class BookRepository(private val client: SupabaseClient) {
         suspend fun getOngoingRiderBookings(userId: String): List<Booking> {
                 return try {
                         client.from("bookings")
-                                .select(Columns.raw("*, rides(*, users(*), vehicles(*))")) {
+                                .select(Columns.raw("*, rides(*, users($RIDE_USER_COLUMNS), vehicles(*))")) {
                                         filter {
                                                 and {
                                                         eq("rider_id", userId)
@@ -511,7 +517,7 @@ class BookRepository(private val client: SupabaseClient) {
                         .format(java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME)
                 return try {
                         client.from("rides")
-                                .select(Columns.raw("*, users(*), vehicles(*)")) {
+                                .select(Columns.raw("*, users($RIDE_USER_COLUMNS), vehicles(*)")) {
                                         filter {
                                                 and {
                                                         eq("driver_id", userId)
@@ -633,7 +639,7 @@ class BookRepository(private val client: SupabaseClient) {
         ): Ride? {
                 return try {
                         client.from("rides")
-                                .select(Columns.raw("*, users(*), vehicles(*)")) {
+                                .select(Columns.raw("*, users($RIDE_USER_COLUMNS), vehicles(*)")) {
                                         filter {
                                                 and {
                                                         eq("recurring_group_id", recurringGroupId)
