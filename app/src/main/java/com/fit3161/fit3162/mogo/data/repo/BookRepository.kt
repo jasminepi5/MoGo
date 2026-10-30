@@ -137,17 +137,6 @@ private const val RIDE_USER_COLUMNS =
 
 class BookRepository(private val client: SupabaseClient) {
 
-        // Upload a single ride to the database.
-        suspend fun uploadRide(ride: Ride): Result<Unit> {
-                return try {
-                        client.from("rides").insert(ride)
-                        Result.success(Unit)
-                } catch (e: Exception) {
-                        Log.e("REPO_ERROR", "Upload failed", e)
-                        Result.failure(e)
-                }
-        }
-
         // Upload multiple rides at once (used for recurring rides).
         suspend fun uploadRides(rides: List<Ride>): Result<Unit> {
                 return try {
@@ -157,13 +146,6 @@ class BookRepository(private val client: SupabaseClient) {
                         Log.e("REPO_ERROR", "Batch upload failed", e)
                         Result.failure(e)
                 }
-        }
-
-        // Get all vehicles registered to a driver.
-        suspend fun getUserVehicles(userId: String): List<Vehicle> {
-                return client.from("vehicles")
-                        .select() { filter { eq("driver_id", userId) } }
-                        .decodeList<Vehicle>()
         }
 
         // Get IDs of rides the user has already booked (excludes cancelled).
@@ -466,21 +448,6 @@ class BookRepository(private val client: SupabaseClient) {
                         .decodeList<Booking>()
         }
 
-        // Get completed rides for the driver (ride history).
-        suspend fun getDriverHistory(userId: String): List<Ride> {
-                return client.from("rides")
-                        .select(Columns.raw("*, users($RIDE_USER_COLUMNS), vehicles(*)")) {
-                                filter {
-                                        and {
-                                                eq("driver_id", userId)
-                                                eq("ride_status", RideStatus.COMPLETED)
-                                        }
-                                }
-                                order("departure_time", Order.DESCENDING)
-                        }
-                        .decodeList<Ride>()
-        }
-
         // Get all ongoing (confirmed) bookings for a rider.
         suspend fun getOngoingRiderBookings(userId: String): List<Booking> {
                 return client.from("bookings")
@@ -494,25 +461,6 @@ class BookRepository(private val client: SupabaseClient) {
                                 order("time_created", Order.ASCENDING)
                         }
                         .decodeList<Booking>()
-        }
-
-        // Get upcoming scheduled rides for a driver.
-        suspend fun getUpcomingDriverRides(userId: String): List<Ride> {
-                val nowUtc = java.time.OffsetDateTime
-                        .now(java.time.ZoneOffset.UTC)
-                        .format(java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                return client.from("rides")
-                        .select(Columns.raw("*, users($RIDE_USER_COLUMNS), vehicles(*)")) {
-                                filter {
-                                        and {
-                                                eq("driver_id", userId)
-                                                eq("ride_status", RideStatus.SCHEDULED)
-                                                gte("departure_time", nowUtc)
-                                        }
-                                }
-                                order("departure_time", Order.ASCENDING)
-                        }
-                        .decodeList<Ride>()
         }
 
         // Set ride_status to "in_progress" when the driver starts the ride.
