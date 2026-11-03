@@ -1,13 +1,25 @@
 *.iml
 .gradle
-/local.properties
-local.properties
+.kotlin
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 studiobot.xml
+*.hprof
+
+# Keys and secrets: API keys live in local.properties, never in git
+local.properties
+.env
+.env.*
+
+# Release signing keys and signed builds (Android Studio writes these to app/release/)
+*.jks
+*.keystore
+/app/release/
+*.apk
+*.aab
 
 # Android Studio settings are per machine; only the shared code style is tracked
 /.idea/*
