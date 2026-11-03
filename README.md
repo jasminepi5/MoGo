@@ -3,7 +3,7 @@
 MoGo is an Android app for sharing rides between Monash University students and staff. Drivers post trips to campus with their free seats, riders book a seat and choose a pickup point on the map, and both see the CO₂ they've saved together.
 
 Built as a final-year Computer Science project (FIT3161 and FIT3162) by team CS 15.
-This repository is Jasmine's fork of the original [team repository](https://github.com/caileensutedja/MoGo).
+This repository is Jasmine's copy of the original [team repository](https://github.com/caileensutedja/MoGo), where the project was built.
 
 ## Team
 
