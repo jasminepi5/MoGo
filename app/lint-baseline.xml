@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 9.1.0" type="baseline" client="gradle" dependencies="false" name="AGP (9.1.0)" variant="all" version="9.1.0">
+<issues format="6" by="lint 9.4.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.4.1)" variant="all" version="9.4.1">
 
     <issue
         id="DefaultLocale"
@@ -36,13 +36,24 @@
 
     <issue
         id="AndroidGradlePluginVersion"
-        message="A newer version of com.android.application than 9.1.0 is available: 9.5.0. (There is also a newer version of 9.1.𝑥 available, if upgrading to 9.5.0 is difficult: 9.1.1)"
-        errorLine1="agp = &quot;9.1.0&quot;"
+        message="A newer version of com.android.application than 9.4.1 is available: 9.5.0"
+        errorLine1="agp = &quot;9.4.1&quot;"
         errorLine2="      ~~~~~~~">
         <location
             file="../gradle/libs.versions.toml"
             line="2"
             column="7"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of `compileSdk` than 36 is available: 37"
+        errorLine1="    compileSdk = 36"
+        errorLine2="    ~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle.kts"
+            line="15"
+            column="5"/>
     </issue>
 
     <issue
@@ -340,17 +351,6 @@
             file="src/main/res/values/strings.xml"
             line="87"
             column="25"/>
-    </issue>
-
-    <issue
-        id="PermissionImpliesUnsupportedChromeOsHardware"
-        message="Permission exists without corresponding hardware `&lt;uses-feature android:name=&quot;android.hardware.telephony&quot; android:required=&quot;false&quot;>` tag"
-        errorLine1="    &lt;uses-permission android:name=&quot;android.permission.SEND_SMS&quot; />"
-        errorLine2="     ~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/AndroidManifest.xml"
-            line="14"
-            column="6"/>
     </issue>
 
     <issue
